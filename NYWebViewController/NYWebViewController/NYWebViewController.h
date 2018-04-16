@@ -10,44 +10,20 @@
 #import <WebKit/WebKit.h>
 #import "NYSecurityPolicy.h"
 //typedef NSURLSessionAuthChallengeDisposition (^WKWebViewDidReceiveAuthenticationChallengeHandler)(WKWebView *webView, NSURLAuthenticationChallenge *challenge, NSURLCredential * _Nullable __autoreleasing * _Nullable credential);
+
 @class NYWebViewController;
 @protocol NYWebViewControllerDelegate <NSObject>
 @optional
-/// Called when web view will go back.
-///
-/// @param webViewController a web view controller.
 - (void)webViewControllerWillGoBack:(NYWebViewController *)webViewController;
-/// Called when web view will go forward.
-///
-/// @param webViewController a web view controller.
 - (void)webViewControllerWillGoForward:(NYWebViewController *)webViewController;
-/// Called when web view will reload.
-///
-/// @param webViewController a web view controller.
 - (void)webViewControllerWillReload:(NYWebViewController *)webViewController;
-/// Called when web view will stop load.
-///
-/// @param webViewController a web view controller.
 - (void)webViewControllerWillStop:(NYWebViewController *)webViewController;
-/// Called when web view did start loading.
-///
-/// @param webViewController a web view controller.
 - (void)webViewControllerDidStartLoad:(NYWebViewController *)webViewController;
-/// Called when web view did finish loading.
-///
-/// @param webViewController a web view controller.
 - (void)webViewControllerDidFinishLoad:(NYWebViewController *)webViewController;
-/// Called when web viw did fail loading.
-///
-/// @param webViewController a web view controller.
-///
-/// @param error a failed loading error.
 - (void)webViewController:(NYWebViewController *)webViewController didFailLoadWithError:(NSError *)error;
-
-// js
 - (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NSString *)message;
-@end
 
+@end
 
 @interface NYWebViewController : UIViewController
 
@@ -57,28 +33,39 @@
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithRequest:(NSURLRequest *)request;
 - (instancetype)initWithURL:(NSURL *)URL configuration:(WKWebViewConfiguration *)configuration;
+- (instancetype)initWithRequest:(NSURLRequest *)request configuration:(WKWebViewConfiguration *)configuration;
 
 // show progress default yes
 @property (nonatomic, assign) BOOL showLoadingProgressView;
-
 // set progress color. default color
 @property (nonatomic, strong) UIColor *progressColor;
-
-// default yes
+@property (nonatomic, assign)CGFloat progressHeight;
+// default yes 是否显示导航栏title
 @property (nonatomic, assign) BOOL isUseWebPageTitle;
-
-@property (nonatomic, assign) BOOL activityIndicatorVisible;
-
+// 导航栏titile长度
 @property (assign, nonatomic) NSUInteger maxAllowedTitleLength;
 
+// 网络请求小菊花
+@property (nonatomic, assign) BOOL activityIndicatorVisible;
+
+// 是否禁用返回手势
+@property (nonatomic, assign) BOOL enableGOBackGesture;
+///
+// 是否显示网页来源
+@property(assign, nonatomic) BOOL showsBackgroundLabel;
+
 @property (nonatomic, weak) id<NYWebViewControllerDelegate> delegate;
+
+
+- (void)reloadWebView;
+- (void)setCookie:(NSString *)cookieStr;
 
 /**
  *  调用JS方法（无返回值）
  *
  *  @param jsStr 调用JS的字符串可以是方法名称，或者单独的js语句  
  */
-- (void)callJS:(nonnull NSString *)jsStr;
+- (void)webViewControllerCallJS:(nonnull NSString *)jsStr;
 
 /**
  *  调用JS方法（可处理返回值）
@@ -86,41 +73,20 @@
  *  @param jsStr 调用JS的字符串可以是方法名称，或者单独的js语句
  *  @param handler  回调block
  */
-- (void)callJS:(nonnull NSString *)jsStr handler:(nullable void(^)(__nullable id response))handler;
+- (void)webViewControllerCallJS:(nonnull NSString *)jsStr handler:(nullable void(^)(__nullable id response))handler;
 
 @end
 
 
-@interface NYWebViewController (SubclassingHooks)
-/// Called when web view will go back. Do not call this directly. Same to the bottom methods.
-/// @discussion 使用的时候需要子类化，并且调用super的方法!切记！！！
-///
-- (void)willGoBack NS_REQUIRES_SUPER;
-/// Called when web view will go forward. Do not call this directly.
-///
-- (void)willGoForward NS_REQUIRES_SUPER;
-/// Called when web view will reload. Do not call this directly.
-///
-- (void)willReload NS_REQUIRES_SUPER;
-/// Called when web view will stop load. Do not call this directly.
-///
-- (void)willStop NS_REQUIRES_SUPER;
-/// Called when web view did start loading. Do not call this directly.
-///
-- (void)didStartLoad NS_REQUIRES_SUPER NS_DEPRECATED_IOS(2_0, 8_0);
-/// Called when web view(WKWebView) did start loading. Do not call this directly.
-///
-/// @param navigation Navigation object of the current request info.
-- (void)didStartLoadWithNavigation:(WKNavigation *)navigation NS_REQUIRES_SUPER NS_AVAILABLE(10_10, 8_0);
-/// Called when web view did finish loading. Do not call this directly.
-///
-- (void)didFinishLoad NS_REQUIRES_SUPER;
-/// Called when web viw did fail loading. Do not call this directly.
-///
-/// @param error a failed loading error.
-- (void)didFailLoadWithError:(NSError *)error NS_REQUIRES_SUPER;
-@end
+@interface NYWebViewController (NavigationControllerBar)
 
+@property (nonatomic, strong) UIColor *navTintColor;
+@property (nonatomic, strong) UIBarButtonItem *leftBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *rightBarButtonItem;
+@property(assign, nonatomic) BOOL showsNavigationCloseBarButtonItem;
+@property(assign, nonatomic) BOOL showsNavigationBackBarButtonItemTitle;
+
+@end
 
 /**
  WebCache clearing.

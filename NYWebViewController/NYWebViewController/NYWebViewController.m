@@ -14,8 +14,9 @@
 
 
 @interface NYWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>{
-    // WKWebViewDidReceiveAuthenticationChallengeHandler _challengeHandler;
-    // AXSecurityPolicy *_securityPolicy;
+     //WKWebViewDidReceiveAuthenticationChallengeHandler _challengeHandler;
+    AXSecurityPolicy *_securityPolicy;
+    WKWebViewConfiguration *_configuration;
 }
 
 
@@ -50,6 +51,10 @@
 
 - (instancetype)initWithURL:(NSURL *)URL configuration:(WKWebViewConfiguration *)configuration {
     // TODO...
+    if (self = [self initWithURL:URL]) {
+        _configuration = configuration;
+        [_configuration.userContentController addScriptMessageHandler:self name:@"webViewApp"];
+    }
     return self;
 }
 
@@ -83,10 +88,9 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:pageURL];
     [request setValue:@"" forHTTPHeaderField:@"Cookie"];
     [_webView loadRequest:request];
-    
 }
 
-- (void)setCookie {
+- (void)setCookie:(NSString *)cookieStr {
     
 }
 
