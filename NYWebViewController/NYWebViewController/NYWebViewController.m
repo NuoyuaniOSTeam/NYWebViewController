@@ -395,6 +395,7 @@
     _webView.UIDelegate = nil;
     _webView.navigationDelegate = nil;
     [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
+    [_webView removeObserver:self forKeyPath:@"title"];
 }
 
 - (void)didReceiveMemoryWarning {
