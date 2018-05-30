@@ -45,7 +45,7 @@
 // 导航栏titile长度
 @property (assign, nonatomic) NSUInteger maxAllowedTitleLength;
 
-// 网络请求小菊花
+// 网络请求小菊花  default yes
 @property (nonatomic, assign) BOOL activityIndicatorVisible;
 
 // 是否禁用返回手势

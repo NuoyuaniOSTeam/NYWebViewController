@@ -33,6 +33,7 @@
         self.progressColor = [UIColor colorWithRed:22.f / 255.f green:126.f / 255.f blue:251.f / 255.f alpha:.8];
         self.showLoadingProgressView = YES;
         self.isUseWebPageTitle = YES;
+        self.activityIndicatorVisible = YES;
     }
     return self;
 }
@@ -225,8 +226,9 @@
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
 
     NSLog(@"%s：%@", __FUNCTION__,webView.URL);
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
+    if (_activityIndicatorVisible) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    }
 }
 
 /**
@@ -249,7 +251,10 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     
     NSLog(@"%s", __FUNCTION__);
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    if (_activityIndicatorVisible) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
 
 }
 
@@ -263,7 +268,9 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     
     NSLog(@"%s%@", __FUNCTION__,error);
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    if (_activityIndicatorVisible) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
 
 }
 
