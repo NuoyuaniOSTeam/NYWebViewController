@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F118A6A20B7B258008BBDCD /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = 2F118A6920B7B258008BBDCD /* main.html */; };
+		2F118A6E20BFEE41008BBDCD /* NSURL+NYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F118A6D20BFEE41008BBDCD /* NSURL+NYTool.m */; };
+		2F118A7120C14047008BBDCD /* NYScriptMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F118A7020C14047008BBDCD /* NYScriptMessage.m */; };
 		2FD1EE7A206384AC00A0D838 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD1EE79206384AC00A0D838 /* AppDelegate.m */; };
 		2FD1EE80206384AC00A0D838 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FD1EE7E206384AC00A0D838 /* Main.storyboard */; };
 		2FD1EE82206384AC00A0D838 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FD1EE81206384AC00A0D838 /* Assets.xcassets */; };
@@ -37,6 +40,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F118A6920B7B258008BBDCD /* main.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = main.html; sourceTree = "<group>"; };
+		2F118A6C20BFEE41008BBDCD /* NSURL+NYTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURL+NYTool.h"; sourceTree = "<group>"; };
+		2F118A6D20BFEE41008BBDCD /* NSURL+NYTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURL+NYTool.m"; sourceTree = "<group>"; };
+		2F118A6F20C14047008BBDCD /* NYScriptMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NYScriptMessage.h; sourceTree = "<group>"; };
+		2F118A7020C14047008BBDCD /* NYScriptMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NYScriptMessage.m; sourceTree = "<group>"; };
 		2FD1EE75206384AC00A0D838 /* NYWebViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYWebViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE78206384AC00A0D838 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2FD1EE79206384AC00A0D838 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -84,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F118A6B20BFEC98008BBDCD /* NYWebViewTool */ = {
+			isa = PBXGroup;
+			children = (
+				2F118A6C20BFEE41008BBDCD /* NSURL+NYTool.h */,
+				2F118A6D20BFEE41008BBDCD /* NSURL+NYTool.m */,
+			);
+			path = NYWebViewTool;
+			sourceTree = "<group>";
+		};
 		2FD1EE6C206384AC00A0D838 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +124,7 @@
 		2FD1EE77206384AC00A0D838 /* NYWebViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2F118A6920B7B258008BBDCD /* main.html */,
 				2FD1EE78206384AC00A0D838 /* AppDelegate.h */,
 				2FD1EE79206384AC00A0D838 /* AppDelegate.m */,
 				2FD1EEAB206387CC00A0D838 /* Example */,
@@ -142,6 +160,9 @@
 			children = (
 				2FD1EEAC2063883000A0D838 /* NYWebViewController.h */,
 				2FD1EEAD2063883000A0D838 /* NYWebViewController.m */,
+				2F118A6F20C14047008BBDCD /* NYScriptMessage.h */,
+				2F118A7020C14047008BBDCD /* NYScriptMessage.m */,
+				2F118A6B20BFEC98008BBDCD /* NYWebViewTool */,
 				2FD1EEAF2063886700A0D838 /* Security */,
 			);
 			path = NYWebViewController;
@@ -273,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FD1EE85206384AC00A0D838 /* LaunchScreen.storyboard in Resources */,
+				2F118A6A20B7B258008BBDCD /* main.html in Resources */,
 				2FD1EE82206384AC00A0D838 /* Assets.xcassets in Resources */,
 				2FD1EE80206384AC00A0D838 /* Main.storyboard in Resources */,
 			);
@@ -304,6 +326,8 @@
 				2FD1EE7A206384AC00A0D838 /* AppDelegate.m in Sources */,
 				2FD1EEB22064E6A100A0D838 /* NYViewController.m in Sources */,
 				2FD1EEB5206A357000A0D838 /* NYSecurityPolicy.m in Sources */,
+				2F118A6E20BFEE41008BBDCD /* NSURL+NYTool.m in Sources */,
+				2F118A7120C14047008BBDCD /* NYScriptMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

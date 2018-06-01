@@ -9,9 +9,10 @@
 #import "NYViewController.h"
 #import "NYWebViewController.h"
 
-@interface NYViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface NYViewController ()<UITableViewDelegate, UITableViewDataSource, NYWebViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *arr;
+@property (nonatomic, strong) NYWebViewController *webVC;
 @end
 
 @implementation NYViewController
@@ -24,6 +25,8 @@
     self.arr = @[@"测试一",@"测试二",@"测试三"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"testCell"];
     self.tableView.tableFooterView = [UIView new];
+    
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -54,13 +57,35 @@
             break;
         }
             
-        case 2:
-            
+        case 2:{
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"html"];
+            _webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
+            [self addScriptMessageHandler];
+            [self.navigationController pushViewController:_webVC animated:YES];
+            [self performSelector:@selector(TESTcallJS1:) withObject:_webVC afterDelay:1.0];
+            _webVC.delegate = self;
             break;
+        }
         default:
             break;
     }
     
+}
+
+- (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NYScriptMessage *)message {
+    NSLog(@"message..........%@",message);
+}
+
+- (void)addScriptMessageHandler {
+    [_webVC addScriptMessageHandlerWithName:@[@"share",@"webViewApp"]];
+}
+
+
+- (void)TESTcallJS1:(NYWebViewController *) vc {
+    //NYWebViewController *v = vc;
+    [vc webViewControllerCallJS:@"alert('调用JS成功1')" handler:^(id response, NSError *error) {
+        NSLog(@"调用js回调事件");
+    }];
 }
 
 
