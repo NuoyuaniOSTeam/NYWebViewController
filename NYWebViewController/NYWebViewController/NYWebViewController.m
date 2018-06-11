@@ -8,22 +8,30 @@
 
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
+<<<<<<< HEAD
 #import "WKWebView+NYWebCookie.h"
 #import "WKWebView+NYWebCache.h"
+=======
+#import "NSURL+NYTool.h"
+>>>>>>> origin/master
 
 #define iphoneX_5_8 ([UIScreen mainScreen].bounds.size.height==812.0f)
 #define kProgressViewHeight 1.5f
 
 
+static MessageBlock messageCallback = nil;
 @interface NYWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>{
      //WKWebViewDidReceiveAuthenticationChallengeHandler _challengeHandler;
     AXSecurityPolicy *_securityPolicy;
     WKWebViewConfiguration *_configuration;
+    BOOL _isLoadLocal;
 }
 
 
 @property (nonatomic, strong) WKWebView *webView;
 @property (strong, nonatomic) CALayer *progresslayer;
+@property (nonatomic, strong) WKWebViewConfiguration *config;
+@property (nonatomic, retain) NSArray *messageHandlerName;
 
 @end
 
@@ -47,16 +55,10 @@
     return self;
 }
 
-- (instancetype)initWithRequest:(NSURLRequest *)request {
-    // TODO...
-    return self;
-}
-
-- (instancetype)initWithURL:(NSURL *)URL configuration:(WKWebViewConfiguration *)configuration {
-    // TODO...
-    if (self = [self initWithURL:URL]) {
-        _configuration = configuration;
-        [_configuration.userContentController addScriptMessageHandler:self name:@"webViewApp"];
+- (instancetype)initWithLocalHtmlURL:(NSURL *)url {
+    if ([self init]) {
+        self.url = url;
+        _isLoadLocal = YES;
     }
     return self;
 }
@@ -66,8 +68,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.webView];
-    [self loadURL:_url];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view addSubview:self.webView];
+    });
+    if (_isLoadLocal) {
+        [self loadLocalHTMLURL:_url];
+    }else{
+        [self loadURL:_url];
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -93,14 +102,16 @@
     [_webView loadRequest:request];
 }
 
-- (void)setCookie:(NSString *)cookieStr {
-    
+- (void)loadLocalHTMLURL:(NSURL *)url {
+    NSString *path = [[NSBundle mainBundle] bundlePath];
+    NSURL *baseURL = [NSURL fileURLWithPath:path];
+    NSString * htmlstr = [[NSString alloc]initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    [self.webView loadHTMLString:htmlstr baseURL:baseURL];
 }
 
 - (WKWebView *)webView {
     if (!_webView) {
-        WKWebViewConfiguration *config = [WKWebViewConfiguration new];
-        _webView = [[WKWebView alloc]initWithFrame:self.view.bounds configuration:config];
+        _webView = [[WKWebView alloc]initWithFrame:self.view.bounds configuration:self.config];
         _webView.navigationDelegate = self;
         _webView.UIDelegate = self;
         _webView.allowsBackForwardNavigationGestures = YES;
@@ -117,6 +128,25 @@
     }
     
     return _webView;
+}
+
+- (WKWebViewConfiguration *)config {
+    if (_config == nil) {
+        _config = [[WKWebViewConfiguration alloc] init];
+        _config.userContentController = [[WKUserContentController alloc] init];
+        _config.allowsInlineMediaPlayback = YES;        // 允许在线播放
+        //_config.allowsAirPlayForMediaPlayback = YES;  //允许视频播放
+        _config.preferences = [[WKPreferences alloc] init];
+        _config.preferences.minimumFontSize = 10;
+        _config.preferences.javaScriptEnabled = YES; //是否支持 JavaScript
+        _config.processPool = [[WKProcessPool alloc] init];
+        NSMutableString *javascript = [NSMutableString string];
+        [javascript appendString:@"document.documentElement.style.webkitTouchCallout='none';"];//禁止长按
+        //[javascript appendString:@"document.documentElement.style.webkitUserSelect='none';"];//禁止选择
+        WKUserScript *noneSelectScript = [[WKUserScript alloc] initWithSource:javascript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+        [_config.userContentController addUserScript:noneSelectScript];
+    }
+    return _config;
 }
 
 #pragma mark - kvo
@@ -198,21 +228,53 @@
 #pragma mark - UIDelegate
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(nonnull WKWebViewConfiguration *)configuration forNavigationAction:(nonnull WKNavigationAction *)navigationAction windowFeatures:(nonnull WKWindowFeatures *)windowFeatures {
     NSLog(@"createWebViewWithConfiguration");
-    return self.webView;
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
 }
 
 // 处理js里的alert
 - (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
-    NSLog(@"runJavaScriptAlertPanelWithMessage");
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:message ? message : @"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:([UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler();
+    }])];
+    
+    [self nyPresentViewController:alertController animated:YES];
 }
 
 // 处理js里的Confirm
 - (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(nonnull NSString *)message initiatedByFrame:(nonnull WKFrameInfo *)frame completionHandler:(nonnull void (^)(BOOL))completionHandler {
-    NSLog(@"runJavaScriptConfirmPanelWithMessage");
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:message ? message : @"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:([UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler(NO);
+    }])];
+    [alertController addAction:([UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler(YES);
+    }])];
+    
+    [self nyPresentViewController:alertController animated:YES];
 }
 // 输入框
 - (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler {
-    NSLog(@"runJavaScriptTextInputPanelWithPrompt");
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:prompt message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = defaultText;
+    }];
+    [alertController addAction:([UIAlertAction actionWithTitle:@"完成" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler(alertController.textFields[0].text?:@"");
+    }])];
+    
+    [self nyPresentViewController:alertController animated:YES];
+}
+
+- (void)nyPresentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag{
+    
+    [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:viewControllerToPresent animated:YES completion:nil];
+    });
 }
 
 
@@ -311,8 +373,43 @@
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     
     NSLog(@"URL: %@", navigationAction.request.URL.absoluteString);
-    
-    decisionHandler(WKNavigationActionPolicyAllow);
+    NSString *scheme = navigationAction.request.URL.scheme.lowercaseString;
+    if (![scheme containsString:@"http"] && ![scheme containsString:@"about"] && ![scheme containsString:@"file"]) {
+        // 对于跨域，需要手动跳转， 用系统浏览器（Safari）打开
+        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否打开appstore？" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [webView goBack];
+            }];
+            UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [NSURL SafariOpenURL:navigationAction.request.URL];
+            }];
+            [alert addAction:ActionOne];
+            [alert addAction:ActionTwo];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+            });
+            
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
+        }
+        
+        [NSURL openURL:navigationAction.request.URL];
+        // 不允许web内跳转
+        decisionHandler(WKNavigationActionPolicyCancel);
+        
+    } else {
+        
+        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"])
+        {
+            [NSURL openURL:navigationAction.request.URL];
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
+        }
+        
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }
 }
 
 //- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(nonnull NSURLAuthenticationChallenge *)challenge completionHandler:(nonnull void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
@@ -376,23 +473,47 @@
     NSLog(@"message:%@",message.body);
     if ([message.body isKindOfClass:[NSDictionary class]]) {
         NSDictionary *body = (NSDictionary *)message.body;
+        NYScriptMessage *msg = [NYScriptMessage new];
+        [msg setValuesForKeysWithDictionary:body];
         if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:didReceiveScriptMessage:)]) {
-            [self.delegate webViewController:self didReceiveScriptMessage:@""];
+            [self.delegate webViewController:self didReceiveScriptMessage:msg];
         }
+        
+        messageCallback ? messageCallback(userContentController,msg) : NULL;
     }
+    
 }
 
-- (void)callJS:(NSString *)jsStr {
-    [self callJS:jsStr handler:nil];
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr {
+    if (_config.userContentController) return;
+    /* removeScriptMessageHandlerForName 同时使用，否则内存泄漏 */
+    for (NSString * objStr in nameArr) {
+        [self.config.userContentController addScriptMessageHandler:self name:objStr];
+    }
+    self.messageHandlerName = nameArr;
 }
 
-- (void)callJS:(NSString *)jsStr handler:(void (^)(id _Nullable))handler {
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr observeValue:(MessageBlock)callback {
+    messageCallback = callback;
+    [self addScriptMessageHandlerWithName:nameArr];
+}
+
+/**
+ *  注销 注册过的js回调oc通知方式，适用于 iOS8 之后
+ */
+- (void)removeScriptMessageHandlerForName:(NSString *)name {
+    [_config.userContentController removeScriptMessageHandlerForName:name];
+}
+
+- (void)webViewControllerCallJS:(NSString *)jsStr {
+    [self webViewControllerCallJS:jsStr handler:nil];
+}
+
+- (void)webViewControllerCallJS:(NSString *)jsStr handler:(void (^)(id response, NSError *error))handler {
     NSLog(@"call js:%@",jsStr);
     // NSString *inputValueJS = @"document.getElementsByName('input')[0].attributes['value'].value";
     [self.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        if (handler) {
-            handler(response);
-        }
+        handler ? handler(response,error) : NULL;
     }];
     
 }

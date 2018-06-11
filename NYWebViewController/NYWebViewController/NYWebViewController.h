@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 #import "NYSecurityPolicy.h"
+#import "NYScriptMessage.h"
+
 //typedef NSURLSessionAuthChallengeDisposition (^WKWebViewDidReceiveAuthenticationChallengeHandler)(WKWebView *webView, NSURLAuthenticationChallenge *challenge, NSURLCredential * _Nullable __autoreleasing * _Nullable credential);
+typedef void (^MessageBlock)(WKUserContentController *userContentController,NYScriptMessage *message);
 
 @class NYWebViewController;
 @protocol NYWebViewControllerDelegate <NSObject>
@@ -21,7 +24,7 @@
 - (void)webViewControllerDidStartLoad:(NYWebViewController *)webViewController;
 - (void)webViewControllerDidFinishLoad:(NYWebViewController *)webViewController;
 - (void)webViewController:(NYWebViewController *)webViewController didFailLoadWithError:(NSError *)error;
-- (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NSString *)message;
+- (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NYScriptMessage *)message;
 
 @end
 
@@ -31,9 +34,7 @@
 @property (nonatomic, strong) NSURL *url;
 
 - (instancetype)initWithURL:(NSURL *)url;
-- (instancetype)initWithRequest:(NSURLRequest *)request;
-- (instancetype)initWithURL:(NSURL *)URL configuration:(WKWebViewConfiguration *)configuration;
-- (instancetype)initWithRequest:(NSURLRequest *)request configuration:(WKWebViewConfiguration *)configuration;
+- (instancetype)initWithLocalHtmlURL:(NSURL *)url;
 
 // show progress default yes
 @property (nonatomic, assign) BOOL showLoadingProgressView;
@@ -56,9 +57,40 @@
 
 @property (nonatomic, weak) id<NYWebViewControllerDelegate> delegate;
 
+@property (nonatomic, assign) BOOL openCache;   //缓存
 
-- (void)reloadWebView;
-- (void)setCookie:(NSString *)cookieStr;
+
+/** 重新加载webview */
+- (void)reload;
+/** 重新加载网页,忽略缓存 */
+- (void)reloadFromOrigin;
+
+/** 返回上一级 */
+- (void)goback;
+/** 下一级 */
+- (void)goForward;
+
+/** 读取本地磁盘的cookies，包括WKWebview的cookies和sharedHTTPCookieStorage存储的cookies */
+- (NSMutableArray *)WKSharedHTTPCookieStorage;
+
+/** 提供cookies插入，用于loadRequest 网页之前*/
+- (void)setcookie:(NSHTTPCookie *)cookie;
+
+/** 清除所有的cookies */
+- (void)deleteAllWKCookies;
+
+/** 清除所有缓存（cookie除外） */
+- (void)deleteAllWebCache;
+
+
+/** JS 调用OC 添加 messageHandler
+ 添加 js 调用 OC，addScriptMessageHandler:name:有两个参数，第一个参数是 userContentController的代理对象，第二个参数是 JS 里发送 postMessage 的对象。添加一个脚本消息的处理器,同时需要在 JS 中添加，window.webkit.messageHandlers.<name>.postMessage(<messageBody>)才能起作用。
+ @param nameArr JS 里发送 postMessage 的对象数组，可同时添加多个对象
+ */
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr;
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr observeValue:(MessageBlock)callback;
+- (void)removeScriptMessageHandlerForName:(NSString *)name;
+
 
 /**
  *  调用JS方法（无返回值）
@@ -73,7 +105,7 @@
  *  @param jsStr 调用JS的字符串可以是方法名称，或者单独的js语句
  *  @param handler  回调block
  */
-- (void)webViewControllerCallJS:(nonnull NSString *)jsStr handler:(nullable void(^)(__nullable id response))handler;
+- (void)webViewControllerCallJS:(nonnull NSString *)jsStr handler:(void (^)(id response, NSError *error))handler;
 
 @end
 
