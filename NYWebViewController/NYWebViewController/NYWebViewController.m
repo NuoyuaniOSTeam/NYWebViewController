@@ -518,6 +518,31 @@ static MessageBlock messageCallback = nil;
     
 }
 
+#pragma mark -
+#pragma mark - WKWebview 缓存 cookie／cache
+- (void)setcookie:(NSHTTPCookie *)cookie
+{
+    [self.webView insertCookie:cookie];
+}
+
+/** 获取本地磁盘的cookies */
+- (NSMutableArray *)WKSharedHTTPCookieStorage
+{
+    return [self.webView sharedHTTPCookieStorage];
+}
+
+/** 删除所有的cookies */
+- (void)deleteAllWKCookies
+{
+    [self.webView deleteAllWKCookies];
+}
+
+/** 删除所有缓存不包括cookies */
+- (void)deleteAllWebCache
+{
+    [self.webView deleteAllWebCache];
+}
+
 #pragma mark - dealloc
 - (void)dealloc {
     [_webView stopLoading];
@@ -564,34 +589,7 @@ static MessageBlock messageCallback = nil;
 @end
 
 
-@implementation NYWebViewController (WebCache)
-#pragma mark -
-#pragma mark - WKWebview 缓存 cookie／cache
 
-- (void)setcookie:(NSHTTPCookie *)cookie
-{
-    [self.webView insertCookie:cookie];
-}
-
-/** 获取本地磁盘的cookies */
-- (NSMutableArray *)WKSharedHTTPCookieStorage
-{
-    return [self.webView sharedHTTPCookieStorage];
-}
-
-/** 删除所有的cookies */
-- (void)deleteAllWKCookies
-{
-    [self.webView deleteAllWKCookies];
-}
-
-/** 删除所有缓存不包括cookies */
-- (void)deleteAllWebCache
-{
-    [self.webView deleteAllWebCache];
-}
-
-@end
 
 
 

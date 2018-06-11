@@ -120,24 +120,7 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 
 @end
 
-/**
- WebCache clearing.
- */
-@interface NYWebViewController (WebCache)
-/** 读取本地磁盘的cookies，包括WKWebview的cookies和sharedHTTPCookieStorage存储的cookies */
-- (NSMutableArray *)WKSharedHTTPCookieStorage;
 
-/** 提供cookies插入，用于loadRequest 网页之前*/
-- (void)setcookie:(NSHTTPCookie *)cookie;
-
-/** 清除所有的cookies */
-- (void)deleteAllWKCookies;
-
-/** 清除所有缓存（cookie除外） */
-- (void)deleteAllWebCache;
-
-
-@end
 
 @interface NYWebViewController (Security)
 /// Challenge handler for the credential.
