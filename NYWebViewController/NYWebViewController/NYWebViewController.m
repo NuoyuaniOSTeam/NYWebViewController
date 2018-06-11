@@ -8,6 +8,8 @@
 
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
+#import "WKWebView+NYWebCookie.h"
+#import "WKWebView+NYWebCache.h"
 
 #define iphoneX_5_8 ([UIScreen mainScreen].bounds.size.height==812.0f)
 #define kProgressViewHeight 1.5f
@@ -440,6 +442,35 @@
 //}
 @end
 
+
+@implementation NYWebViewController (WebCache)
+#pragma mark -
+#pragma mark - WKWebview 缓存 cookie／cache
+
+- (void)setcookie:(NSHTTPCookie *)cookie
+{
+    [self.webView insertCookie:cookie];
+}
+
+/** 获取本地磁盘的cookies */
+- (NSMutableArray *)WKSharedHTTPCookieStorage
+{
+    return [self.webView sharedHTTPCookieStorage];
+}
+
+/** 删除所有的cookies */
+- (void)deleteAllWKCookies
+{
+    [self.webView deleteAllWKCookies];
+}
+
+/** 删除所有缓存不包括cookies */
+- (void)deleteAllWebCache
+{
+    [self.webView deleteAllWebCache];
+}
+
+@end
 
 
 
