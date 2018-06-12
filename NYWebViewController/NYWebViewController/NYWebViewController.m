@@ -8,12 +8,24 @@
 
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
+<<<<<<< HEAD
 
 #import "WKWebView+NYWebCookie.h"
 #import "WKWebView+NYWebCache.h"
 
 #import "NSURL+NYTool.h"
 
+=======
+#import "WKWebView+NYWebCookie.h"
+#import "WKWebView+NYWebCache.h"
+#import "NSURL+NYTool.h"
+
+#ifndef __OPTIMIZE__
+#define NSLog(...) NSLog(__VA_ARGS__)
+#else
+# define NSLog(...) {}
+#endif
+>>>>>>> origin/master
 
 #define iphoneX_5_8 ([UIScreen mainScreen].bounds.size.height==812.0f)
 #define kProgressViewHeight 1.5f
