@@ -181,13 +181,10 @@
 			children = (
 				2FD1EEAC2063883000A0D838 /* NYWebViewController.h */,
 				2FD1EEAD2063883000A0D838 /* NYWebViewController.m */,
-<<<<<<< HEAD
 				C7799D6520CE5EC400557C8C /* NYWebViewCache */,
-=======
 				2F118A6F20C14047008BBDCD /* NYScriptMessage.h */,
 				2F118A7020C14047008BBDCD /* NYScriptMessage.m */,
 				2F118A6B20BFEC98008BBDCD /* NYWebViewTool */,
->>>>>>> origin/master
 				2FD1EEAF2063886700A0D838 /* Security */,
 			);
 			path = NYWebViewController;
@@ -367,13 +364,10 @@
 				2FD1EEB22064E6A100A0D838 /* NYViewController.m in Sources */,
 				C7799D6D20CE5EC400557C8C /* WKWebView+NYWebCache.m in Sources */,
 				2FD1EEB5206A357000A0D838 /* NYSecurityPolicy.m in Sources */,
-<<<<<<< HEAD
 				C7799D6C20CE5EC400557C8C /* NSObject+NYRuntime.m in Sources */,
 				C7799D6E20CE5EC400557C8C /* WKWebView+NYWebCookie.m in Sources */,
-=======
 				2F118A6E20BFEE41008BBDCD /* NSURL+NYTool.m in Sources */,
 				2F118A7120C14047008BBDCD /* NYScriptMessage.m in Sources */,
->>>>>>> origin/master
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
