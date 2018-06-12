@@ -62,7 +62,7 @@
             _webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
             [self addScriptMessageHandler];
             [self.navigationController pushViewController:_webVC animated:YES];
-            [self performSelector:@selector(TESTcallJS1:) withObject:_webVC afterDelay:1.0];
+            // [self performSelector:@selector(TESTcallJS1:) withObject:_webVC afterDelay:1.0];
             _webVC.delegate = self;
             break;
         }
@@ -73,7 +73,7 @@
 }
 
 - (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NYScriptMessage *)message {
-    NSLog(@"message..........%@",message);
+    
 }
 
 - (void)addScriptMessageHandler {
