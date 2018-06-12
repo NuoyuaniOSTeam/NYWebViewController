@@ -8,7 +8,10 @@
 
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
+#import "WKWebView+NYWebCookie.h"
+#import "WKWebView+NYWebCache.h"
 #import "NSURL+NYTool.h"
+
 #ifndef __OPTIMIZE__
 #define NSLog(...) NSLog(__VA_ARGS__)
 #else
@@ -43,6 +46,7 @@ static MessageBlock messageCallback = nil;
         self.progressColor = [UIColor colorWithRed:22.f / 255.f green:126.f / 255.f blue:251.f / 255.f alpha:.8];
         self.showLoadingProgressView = YES;
         self.isUseWebPageTitle = YES;
+        self.activityIndicatorVisible = YES;
     }
     return self;
 }
@@ -289,8 +293,9 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
 
     NSLog(@"%s：%@", __FUNCTION__,webView.URL);
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
+    if (_activityIndicatorVisible) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    }
 }
 
 /**
@@ -313,7 +318,10 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     
     NSLog(@"%s", __FUNCTION__);
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    if (_activityIndicatorVisible) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
 
 }
 
@@ -327,7 +335,9 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     
     NSLog(@"%s%@", __FUNCTION__,error);
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    if (_activityIndicatorVisible) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
 
 }
 
@@ -556,6 +566,35 @@ static MessageBlock messageCallback = nil;
 //}
 @end
 
+
+@implementation NYWebViewController (WebCache)
+#pragma mark -
+#pragma mark - WKWebview 缓存 cookie／cache
+
+- (void)setcookie:(NSHTTPCookie *)cookie
+{
+    [self.webView insertCookie:cookie];
+}
+
+/** 获取本地磁盘的cookies */
+- (NSMutableArray *)WKSharedHTTPCookieStorage
+{
+    return [self.webView sharedHTTPCookieStorage];
+}
+
+/** 删除所有的cookies */
+- (void)deleteAllWKCookies
+{
+    [self.webView deleteAllWKCookies];
+}
+
+/** 删除所有缓存不包括cookies */
+- (void)deleteAllWebCache
+{
+    [self.webView deleteAllWebCache];
+}
+
+@end
 
 
 

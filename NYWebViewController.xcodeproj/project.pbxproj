@@ -21,6 +21,9 @@
 		2FD1EEAE2063883000A0D838 /* NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD1EEAD2063883000A0D838 /* NYWebViewController.m */; };
 		2FD1EEB22064E6A100A0D838 /* NYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD1EEB12064E6A100A0D838 /* NYViewController.m */; };
 		2FD1EEB5206A357000A0D838 /* NYSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD1EEB3206A356E00A0D838 /* NYSecurityPolicy.m */; };
+		C7799D6C20CE5EC400557C8C /* NSObject+NYRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = C7799D6720CE5EC400557C8C /* NSObject+NYRuntime.m */; };
+		C7799D6D20CE5EC400557C8C /* WKWebView+NYWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C7799D6920CE5EC400557C8C /* WKWebView+NYWebCache.m */; };
+		C7799D6E20CE5EC400557C8C /* WKWebView+NYWebCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = C7799D6B20CE5EC400557C8C /* WKWebView+NYWebCookie.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,12 @@
 		2FD1EEB12064E6A100A0D838 /* NYViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NYViewController.m; sourceTree = "<group>"; };
 		2FD1EEB3206A356E00A0D838 /* NYSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYSecurityPolicy.m; sourceTree = "<group>"; };
 		2FD1EEB4206A356E00A0D838 /* NYSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYSecurityPolicy.h; sourceTree = "<group>"; };
+		C7799D6620CE5EC400557C8C /* NSObject+NYRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+NYRuntime.h"; sourceTree = "<group>"; };
+		C7799D6720CE5EC400557C8C /* NSObject+NYRuntime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+NYRuntime.m"; sourceTree = "<group>"; };
+		C7799D6820CE5EC400557C8C /* WKWebView+NYWebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+NYWebCache.h"; sourceTree = "<group>"; };
+		C7799D6920CE5EC400557C8C /* WKWebView+NYWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+NYWebCache.m"; sourceTree = "<group>"; };
+		C7799D6A20CE5EC400557C8C /* WKWebView+NYWebCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+NYWebCookie.h"; sourceTree = "<group>"; };
+		C7799D6B20CE5EC400557C8C /* WKWebView+NYWebCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+NYWebCookie.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,9 +181,13 @@
 			children = (
 				2FD1EEAC2063883000A0D838 /* NYWebViewController.h */,
 				2FD1EEAD2063883000A0D838 /* NYWebViewController.m */,
+<<<<<<< HEAD
+				C7799D6520CE5EC400557C8C /* NYWebViewCache */,
+=======
 				2F118A6F20C14047008BBDCD /* NYScriptMessage.h */,
 				2F118A7020C14047008BBDCD /* NYScriptMessage.m */,
 				2F118A6B20BFEC98008BBDCD /* NYWebViewTool */,
+>>>>>>> origin/master
 				2FD1EEAF2063886700A0D838 /* Security */,
 			);
 			path = NYWebViewController;
@@ -198,6 +211,19 @@
 				2FD1EEB3206A356E00A0D838 /* NYSecurityPolicy.m */,
 			);
 			path = Security;
+			sourceTree = "<group>";
+		};
+		C7799D6520CE5EC400557C8C /* NYWebViewCache */ = {
+			isa = PBXGroup;
+			children = (
+				C7799D6620CE5EC400557C8C /* NSObject+NYRuntime.h */,
+				C7799D6720CE5EC400557C8C /* NSObject+NYRuntime.m */,
+				C7799D6820CE5EC400557C8C /* WKWebView+NYWebCache.h */,
+				C7799D6920CE5EC400557C8C /* WKWebView+NYWebCache.m */,
+				C7799D6A20CE5EC400557C8C /* WKWebView+NYWebCookie.h */,
+				C7799D6B20CE5EC400557C8C /* WKWebView+NYWebCookie.m */,
+			);
+			path = NYWebViewCache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -339,9 +365,15 @@
 				2FD1EE88206384AC00A0D838 /* main.m in Sources */,
 				2FD1EE7A206384AC00A0D838 /* AppDelegate.m in Sources */,
 				2FD1EEB22064E6A100A0D838 /* NYViewController.m in Sources */,
+				C7799D6D20CE5EC400557C8C /* WKWebView+NYWebCache.m in Sources */,
 				2FD1EEB5206A357000A0D838 /* NYSecurityPolicy.m in Sources */,
+<<<<<<< HEAD
+				C7799D6C20CE5EC400557C8C /* NSObject+NYRuntime.m in Sources */,
+				C7799D6E20CE5EC400557C8C /* WKWebView+NYWebCookie.m in Sources */,
+=======
 				2F118A6E20BFEE41008BBDCD /* NSURL+NYTool.m in Sources */,
 				2F118A7120C14047008BBDCD /* NYScriptMessage.m in Sources */,
+>>>>>>> origin/master
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
