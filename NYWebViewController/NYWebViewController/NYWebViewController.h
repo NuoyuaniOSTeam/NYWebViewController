@@ -62,8 +62,6 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 
 /** 重新加载webview */
 - (void)reload;
-/** 重新加载网页,忽略缓存 */
-- (void)reloadFromOrigin;
 
 /** 返回上一级 */
 - (void)goback;
@@ -120,12 +118,3 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 
 @end
 
-
-
-@interface NYWebViewController (Security)
-/// Challenge handler for the credential.
-//@property(copy, nonatomic, nullable) WKWebViewDidReceiveAuthenticationChallengeHandler challengeHandler;
-/// The security policy used by created session to evaluate server trust for secure connections.
-/// `AXWebViewController` uses the `defaultPolicy` unless otherwise specified.
-@property(readwrite, nonatomic, nullable) NYSecurityPolicy *securityPolicy;
-@end
