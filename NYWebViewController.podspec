@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.description  = "NYWebViewController base on WKWebView, addtion with cocoapod support."
   s.homepage     = "https://github.com/NuoyuaniOSTeam/NYWebViewContorller"
 # s.social_media_url   = "http://www.weibo.com/u/5267312788"
-  s.license= { :type => "MIT", :file => "LICENSE" }
+  s.license= "MIT"
   s.author       = { "NuoYuaniOS" => "appleco@nuoayuan.com.cn" }
   s.source       = { :git => "https://github.com/NuoyuaniOSTeam/NYWebViewContorller.git", :tag => s.version }
   s.source_files = "NYWebViewController/NYWebViewController/NYWebViewController/*.{h,m}","NYWebViewController/NYWebViewController/NYWebViewController/NYWebViewCache/*.{h,m}","NYWebViewController/NYWebViewController/NYWebViewController/NYWebViewTool/*.{h,m}","NYWebViewController/NYWebViewController/NYWebViewController/Security/*.{h,m}"
