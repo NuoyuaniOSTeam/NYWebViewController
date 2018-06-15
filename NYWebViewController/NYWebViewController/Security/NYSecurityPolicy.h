@@ -22,10 +22,10 @@
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
 
-typedef NS_ENUM(NSUInteger, AXSSLPinningMode) {
-    AXSSLPinningModeNone,
-    AXSSLPinningModePublicKey,
-    AXSSLPinningModeCertificate,
+typedef NS_ENUM(NSUInteger, NYSSLPinningMode) {
+    NYSSLPinningModeNone,
+    NYSSLPinningModePublicKey,
+    NYSSLPinningModeCertificate,
 };
 
 /**
@@ -36,12 +36,12 @@ typedef NS_ENUM(NSUInteger, AXSSLPinningMode) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AXSecurityPolicy : NSObject <NSSecureCoding, NSCopying>
+@interface NYSecurityPolicy : NSObject <NSSecureCoding, NSCopying>
 
 /**
  The criteria by which server trust should be evaluated against the pinned SSL certificates. Defaults to `AXSSLPinningModeNone`.
  */
-@property (readonly, nonatomic, assign) AXSSLPinningMode SSLPinningMode;
+@property (readonly, nonatomic, assign) NYSSLPinningMode SSLPinningMode;
 
 /**
  The certificates used to evaluate server trust according to the SSL pinning mode. 
@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return A new security policy.
  */
-+ (instancetype)policyWithPinningMode:(AXSSLPinningMode)pinningMode;
++ (instancetype)policyWithPinningMode:(NYSSLPinningMode)pinningMode;
 
 /**
  Creates and returns a security policy with the specified pinning mode.
@@ -105,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return A new security policy.
  */
-+ (instancetype)policyWithPinningMode:(AXSSLPinningMode)pinningMode withPinnedCertificates:(NSSet <NSData *> *)pinnedCertificates;
++ (instancetype)policyWithPinningMode:(NYSSLPinningMode)pinningMode withPinnedCertificates:(NSSet <NSData *> *)pinnedCertificates;
 
 ///------------------------------
 /// @name Evaluating Server Trust

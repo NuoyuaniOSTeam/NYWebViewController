@@ -127,5 +127,5 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 //@property(copy, nonatomic, nullable) WKWebViewDidReceiveAuthenticationChallengeHandler challengeHandler;
 /// The security policy used by created session to evaluate server trust for secure connections.
 /// `AXWebViewController` uses the `defaultPolicy` unless otherwise specified.
-@property(readwrite, nonatomic, nullable) AXSecurityPolicy *securityPolicy;
+@property(readwrite, nonatomic, nullable) NYSecurityPolicy *securityPolicy;
 @end

@@ -25,7 +25,7 @@
 static MessageBlock messageCallback = nil;
 @interface NYWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>{
      //WKWebViewDidReceiveAuthenticationChallengeHandler _challengeHandler;
-    AXSecurityPolicy *_securityPolicy;
+    NYSecurityPolicy *_securityPolicy;
     WKWebViewConfiguration *_configuration;
     BOOL _isLoadLocal;
 }
