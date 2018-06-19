@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2FD1EE74206384AC00A0D838"
-               BuildableName = "NYWebViewController.app"
-               BlueprintName = "NYWebViewController"
-               ReferencedContainer = "container:NYWebViewController.xcodeproj">
+               BuildableName = "NYWebViewControllerExample.app"
+               BlueprintName = "NYWebViewControllerExample"
+               ReferencedContainer = "container:NYWebViewControllerExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,34 +28,14 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2FD1EE8C206384AD00A0D838"
-               BuildableName = "NYWebViewControllerTests.xctest"
-               BlueprintName = "NYWebViewControllerTests"
-               ReferencedContainer = "container:NYWebViewController.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2FD1EE97206384AD00A0D838"
-               BuildableName = "NYWebViewControllerUITests.xctest"
-               BlueprintName = "NYWebViewControllerUITests"
-               ReferencedContainer = "container:NYWebViewController.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2FD1EE74206384AC00A0D838"
-            BuildableName = "NYWebViewController.app"
-            BlueprintName = "NYWebViewController"
-            ReferencedContainer = "container:NYWebViewController.xcodeproj">
+            BuildableName = "NYWebViewControllerExample.app"
+            BlueprintName = "NYWebViewControllerExample"
+            ReferencedContainer = "container:NYWebViewControllerExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,17 +56,12 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2FD1EE74206384AC00A0D838"
-            BuildableName = "NYWebViewController.app"
-            BlueprintName = "NYWebViewController"
-            ReferencedContainer = "container:NYWebViewController.xcodeproj">
+            BuildableName = "NYWebViewControllerExample.app"
+            BlueprintName = "NYWebViewControllerExample"
+            ReferencedContainer = "container:NYWebViewControllerExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
-         <AdditionalOption
-            key = "NSZombieEnabled"
-            value = "YES"
-            isEnabled = "YES">
-         </AdditionalOption>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
@@ -100,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2FD1EE74206384AC00A0D838"
-            BuildableName = "NYWebViewController.app"
-            BlueprintName = "NYWebViewController"
-            ReferencedContainer = "container:NYWebViewController.xcodeproj">
+            BuildableName = "NYWebViewControllerExample.app"
+            BlueprintName = "NYWebViewControllerExample"
+            ReferencedContainer = "container:NYWebViewControllerExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

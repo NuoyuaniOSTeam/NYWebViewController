@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface NYWebViewControllerTests : XCTestCase
+@interface NYWebViewControllerExampleTests : XCTestCase
 
 @end
 
-@implementation NYWebViewControllerTests
+@implementation NYWebViewControllerExampleTests
 
 - (void)setUp {
     [super setUp];
