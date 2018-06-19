@@ -74,21 +74,23 @@
 
 - (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NYScriptMessage *)message {
     NSDictionary *dict = message.params;
-    NSString *textToShare = @"分享的标题。";
-    NSURL *urlToShare = [NSURL URLWithString:[dict objectForKey:@"url"]];
-    NSArray *activityItems = @[textToShare, urlToShare];
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc]initWithActivityItems:activityItems applicationActivities:nil];
-    activityVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard,UIActivityTypeAssignToContact,UIActivityTypeSaveToCameraRoll];
-    [self presentViewController:activityVC animated:YES completion:nil];
-    activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-        if (completed) {
-            NSLog(@"completed");
-            //分享 成功
-        } else  {
-            NSLog(@"cancled");
-            //分享 取消
-        }
-    };
+    if ([message.method isEqualToString:@"share"]) {
+        NSString *textToShare = @"分享的标题。";
+        NSURL *urlToShare = [NSURL URLWithString:[dict objectForKey:@"url"]];
+        NSArray *activityItems = @[textToShare, urlToShare];
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc]initWithActivityItems:activityItems applicationActivities:nil];
+        activityVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard,UIActivityTypeAssignToContact,UIActivityTypeSaveToCameraRoll];
+        [self presentViewController:activityVC animated:YES completion:nil];
+        activityVC.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+            if (completed) {
+                NSLog(@"completed");
+                //分享 成功
+            } else  {
+                NSLog(@"cancled");
+                //分享 取消
+            }
+        };
+    }
 }
 
 - (void)addScriptMessageHandler {
