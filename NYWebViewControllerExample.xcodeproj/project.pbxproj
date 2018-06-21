@@ -126,17 +126,17 @@
 		2F2BC06F20D8A2F600864348 /* NYWebViewControllerExample */ = {
 			isa = PBXGroup;
 			children = (
-				2F2BC0A220D8B13A00864348 /* Main.storyboard */,
 				2F2BC07020D8A2F600864348 /* AppDelegate.h */,
 				2F2BC07120D8A2F600864348 /* AppDelegate.m */,
+				2F2BC07B20D8A2F600864348 /* NYViewController.h */,
+				2F2BC07C20D8A2F600864348 /* NYViewController.m */,
+				2F2BC07920D8A2F600864348 /* main.html */,
+				2F2BC07620D8A2F600864348 /* LogCategory */,
+				2F2BC0A220D8B13A00864348 /* Main.storyboard */,
 				2F2BC07220D8A2F600864348 /* Assets.xcassets */,
 				2F2BC07320D8A2F600864348 /* LaunchScreen.storyboard */,
 				2F2BC07520D8A2F600864348 /* Info.plist */,
-				2F2BC07620D8A2F600864348 /* LogCategory */,
-				2F2BC07920D8A2F600864348 /* main.html */,
 				2F2BC07A20D8A2F600864348 /* main.m */,
-				2F2BC07B20D8A2F600864348 /* NYViewController.h */,
-				2F2BC07C20D8A2F600864348 /* NYViewController.m */,
 			);
 			path = NYWebViewControllerExample;
 			sourceTree = "<group>";
@@ -153,11 +153,11 @@
 		2F2BC07D20D8A2F600864348 /* NYWebViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2F2BC08720D8A2F600864348 /* NYWebViewController.h */,
+				2F2BC08820D8A2F600864348 /* NYWebViewController.m */,
 				2F2BC07E20D8A2F600864348 /* NYScriptMessage.h */,
 				2F2BC07F20D8A2F600864348 /* NYScriptMessage.m */,
 				2F2BC08020D8A2F600864348 /* NYWebViewCache */,
-				2F2BC08720D8A2F600864348 /* NYWebViewController.h */,
-				2F2BC08820D8A2F600864348 /* NYWebViewController.m */,
 				2F2BC08920D8A2F600864348 /* NYWebViewTool */,
 				2F2BC08C20D8A2F600864348 /* Security */,
 			);
@@ -198,8 +198,8 @@
 		2FD1EE6C206384AC00A0D838 = {
 			isa = PBXGroup;
 			children = (
-				2F2BC07D20D8A2F600864348 /* NYWebViewController */,
 				2F2BC06F20D8A2F600864348 /* NYWebViewControllerExample */,
+				2F2BC07D20D8A2F600864348 /* NYWebViewController */,
 				2F2BC06C20D8A2F600864348 /* NYWebViewControllerExampleTests */,
 				2F2BC06920D8A2F600864348 /* NYWebViewControllerExampleUITests */,
 				2FD1EE76206384AC00A0D838 /* Products */,
