@@ -35,6 +35,8 @@ static MessageBlock messageCallback = nil;
 @property (strong, nonatomic) CALayer *progresslayer;
 @property (nonatomic, strong) WKWebViewConfiguration *config;
 @property (nonatomic, retain) NSArray *messageHandlerName;
+@property (nonatomic, strong) UILabel *hostLable;
+
 
 @end
 
@@ -47,6 +49,7 @@ static MessageBlock messageCallback = nil;
         self.showLoadingProgressView = YES;
         self.isUseWebPageTitle = YES;
         self.activityIndicatorVisible = YES;
+        self.showHostLabel = YES;
     }
     return self;
 }
@@ -74,6 +77,10 @@ static MessageBlock messageCallback = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.view addSubview:self.webView];
     });
+    
+    if (self.showHostLabel) {
+        [self.webView insertSubview:self.hostLable belowSubview:self.webView.scrollView];
+    }
     if (_isLoadLocal) {
         [self loadLocalHTMLURL:_url];
     }else{
@@ -102,7 +109,13 @@ static MessageBlock messageCallback = nil;
 - (void)loadURL:(NSURL *)pageURL {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:pageURL];
     [request setValue:@"" forHTTPHeaderField:@"Cookie"];
+    
+    if (_showHostLabel && _hostLable && request.URL.host) {
+        _hostLable.text = [NSString stringWithFormat:@"网页由%@提供",request.URL.host];
+        [_hostLable sizeToFit];
+    }
     [_webView loadRequest:request];
+
 }
 
 - (void)loadLocalHTMLURL:(NSURL *)url {
@@ -112,13 +125,25 @@ static MessageBlock messageCallback = nil;
     [self.webView loadHTMLString:htmlstr baseURL:baseURL];
 }
 
+- (UILabel *)hostLable{
+    if (!_hostLable) {
+        _hostLable = [UILabel new];
+        _hostLable.text = nil;
+        _hostLable.font = [UIFont systemFontOfSize:14];
+        _hostLable.textColor = [UIColor darkGrayColor];
+        [_hostLable sizeToFit];
+    }
+    return _hostLable;
+}
+
 - (WKWebView *)webView {
+
     if (!_webView) {
         _webView = [[WKWebView alloc]initWithFrame:self.view.bounds configuration:self.config];
         _webView.navigationDelegate = self;
         _webView.UIDelegate = self;
         _webView.allowsBackForwardNavigationGestures = YES;
-        _webView.backgroundColor = [UIColor clearColor];
+//        _webView.backgroundColor = [UIColor clearColor];
         _webView.scrollView.backgroundColor = [UIColor clearColor];
         if (self.showLoadingProgressView) {
             [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:NULL];
@@ -232,7 +257,7 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)didFinishLoad {
-    
+
 }
 
 - (void)didFailLoadWithError:(NSError *)error{
@@ -333,6 +358,10 @@ static MessageBlock messageCallback = nil;
     
     if (_activityIndicatorVisible) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
+    
+    if (_showHostLabel && self.hostLable) {
+        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 125);
     }
 
 }

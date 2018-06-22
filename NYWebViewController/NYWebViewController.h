@@ -46,14 +46,14 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 // 导航栏titile长度
 @property (assign, nonatomic) NSUInteger maxAllowedTitleLength;
 
-// 网络请求小菊花  default yes
+// 网络请求小菊花  default YES
 @property (nonatomic, assign) BOOL activityIndicatorVisible;
 
 // 是否禁用返回手势
 @property (nonatomic, assign) BOOL enableGOBackGesture;
 ///
-// 是否显示网页来源
-@property(assign, nonatomic) BOOL showsBackgroundLabel;
+// 是否显示网页来源 default YES
+@property(assign, nonatomic) BOOL showHostLabel;
 
 @property (nonatomic, weak) id<NYWebViewControllerDelegate> delegate;
 
