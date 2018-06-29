@@ -25,6 +25,7 @@
 		2F2BC0A020D8A2F600864348 /* NSURL+NYTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08B20D8A2F600864348 /* NSURL+NYTool.m */; };
 		2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */; };
 		2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2BC0A220D8B13A00864348 /* Main.storyboard */; };
+		C72E8BEB20E620AA006BC276 /* html.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C72E8BEA20E620AA006BC276 /* html.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		2FD1EE75206384AC00A0D838 /* NYWebViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYWebViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE8D206384AD00A0D838 /* NYWebViewControllerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE98206384AD00A0D838 /* NYWebViewControllerExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C72E8BEA20E620AA006BC276 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 		2F2BC08920D8A2F600864348 /* NYWebViewTool */ = {
 			isa = PBXGroup;
 			children = (
+				C72E8BEA20E620AA006BC276 /* html.bundle */,
 				2F2BC08A20D8A2F600864348 /* NSURL+NYTool.h */,
 				2F2BC08B20D8A2F600864348 /* NSURL+NYTool.m */,
 			);
@@ -322,6 +325,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C72E8BEB20E620AA006BC276 /* html.bundle in Resources */,
 				2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */,
 				2F2BC09820D8A2F600864348 /* main.html in Resources */,
 				2F2BC09520D8A2F600864348 /* LaunchScreen.storyboard in Resources */,

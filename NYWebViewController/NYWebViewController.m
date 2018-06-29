@@ -12,6 +12,13 @@
 #import "WKWebView+NYWebCache.h"
 #import "NSURL+NYTool.h"
 
+#ifndef kBY404NotFoundHTMLPath
+#define kBY404NotFoundHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/404" ofType:@"html"]
+#endif
+#ifndef kBYNetworkErrorHTMLPath
+#define kBYNetworkErrorHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/neterror" ofType:@"html"]
+#endif
+
 #ifndef __OPTIMIZE__
 #define NSLog(...) NSLog(__VA_ARGS__)
 #else
@@ -261,7 +268,19 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)didFailLoadWithError:(NSError *)error{
+    if (error.code == NSURLErrorCancelled) {
+        [_webView reload];
+        return;
+    }
+    if (error.code == NSURLErrorCannotFindHost) {// 404
+        [self loadURL:[NSURL fileURLWithPath:kBY404NotFoundHTMLPath]];
+    } else {
+        [self loadURL:[NSURL fileURLWithPath:kBYNetworkErrorHTMLPath]];
+    }
     
+    if (_delegate && [_delegate respondsToSelector:@selector(webViewController:didFailLoadWithError:)]) {
+        [_delegate webViewController:self didFailLoadWithError:error];
+    }
 }
 
 
@@ -379,6 +398,7 @@ static MessageBlock messageCallback = nil;
     if (_activityIndicatorVisible) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
+    [self didFailLoadWithError:error];
 
 }
 
