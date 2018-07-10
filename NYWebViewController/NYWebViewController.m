@@ -12,6 +12,13 @@
 #import "WKWebView+NYWebCache.h"
 #import "NSURL+NYTool.h"
 
+#ifndef kBY404NotFoundHTMLPath
+#define kBY404NotFoundHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/404" ofType:@"html"]
+#endif
+#ifndef kBYNetworkErrorHTMLPath
+#define kBYNetworkErrorHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/neterror" ofType:@"html"]
+#endif
+
 #ifndef __OPTIMIZE__
 #define NSLog(...) NSLog(__VA_ARGS__)
 #else
@@ -35,6 +42,8 @@ static MessageBlock messageCallback = nil;
 @property (strong, nonatomic) CALayer *progresslayer;
 @property (nonatomic, strong) WKWebViewConfiguration *config;
 @property (nonatomic, retain) NSArray *messageHandlerName;
+@property (nonatomic, strong) UILabel *hostLable;
+
 
 @end
 
@@ -47,6 +56,7 @@ static MessageBlock messageCallback = nil;
         self.showLoadingProgressView = YES;
         self.isUseWebPageTitle = YES;
         self.activityIndicatorVisible = YES;
+        self.showHostLabel = YES;
     }
     return self;
 }
@@ -74,6 +84,10 @@ static MessageBlock messageCallback = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.view addSubview:self.webView];
     });
+    
+    if (self.showHostLabel) {
+        [self.webView insertSubview:self.hostLable belowSubview:self.webView.scrollView];
+    }
     if (_isLoadLocal) {
         [self loadLocalHTMLURL:_url];
     }else{
@@ -102,6 +116,10 @@ static MessageBlock messageCallback = nil;
 - (void)loadURL:(NSURL *)pageURL {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:pageURL];
     [request setValue:@"" forHTTPHeaderField:@"Cookie"];
+    if (_showHostLabel && _hostLable && request.URL.host) {
+        _hostLable.text = [NSString stringWithFormat:@"网页由%@提供",request.URL.host];
+        [_hostLable sizeToFit];
+    }
     [self.webView loadRequest:request];
 }
 
@@ -112,13 +130,25 @@ static MessageBlock messageCallback = nil;
     [self.webView loadHTMLString:htmlstr baseURL:baseURL];
 }
 
+- (UILabel *)hostLable{
+    if (!_hostLable) {
+        _hostLable = [UILabel new];
+        _hostLable.text = nil;
+        _hostLable.font = [UIFont systemFontOfSize:14];
+        _hostLable.textColor = [UIColor darkGrayColor];
+        [_hostLable sizeToFit];
+    }
+    return _hostLable;
+}
+
 - (WKWebView *)webView {
+
     if (!_webView) {
         _webView = [[WKWebView alloc]initWithFrame:self.view.bounds configuration:self.config];
         _webView.navigationDelegate = self;
         _webView.UIDelegate = self;
         _webView.allowsBackForwardNavigationGestures = YES;
-        _webView.backgroundColor = [UIColor clearColor];
+//        _webView.backgroundColor = [UIColor clearColor];
         _webView.scrollView.backgroundColor = [UIColor clearColor];
         if (self.showLoadingProgressView) {
             [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:NULL];
@@ -232,11 +262,23 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)didFinishLoad {
-    
+
 }
 
 - (void)didFailLoadWithError:(NSError *)error{
+    if (error.code == NSURLErrorCancelled) {
+        [_webView reload];
+        return;
+    }
+    if (error.code == NSURLErrorCannotFindHost) {// 404
+        [self loadURL:[NSURL fileURLWithPath:kBY404NotFoundHTMLPath]];
+    } else {
+        [self loadURL:[NSURL fileURLWithPath:kBYNetworkErrorHTMLPath]];
+    }
     
+    if (_delegate && [_delegate respondsToSelector:@selector(webViewController:didFailLoadWithError:)]) {
+        [_delegate webViewController:self didFailLoadWithError:error];
+    }
 }
 
 
@@ -334,6 +376,10 @@ static MessageBlock messageCallback = nil;
     if (_activityIndicatorVisible) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
+    
+    if (_showHostLabel && self.hostLable) {
+        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 125);
+    }
 
 }
 
@@ -350,6 +396,7 @@ static MessageBlock messageCallback = nil;
     if (_activityIndicatorVisible) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
+    [self didFailLoadWithError:error];
 
 }
 

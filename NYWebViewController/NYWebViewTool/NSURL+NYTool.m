@@ -33,30 +33,30 @@
         
         //获取应用名字
         //NSDictionary *urlschemes = [registerURLSchemes urlschemes];
-//        NSDictionary *appInfo = [urlschemes objectForKey:URL.scheme];
-//        NSString *name =[appInfo objectForKey:@"name"];
+        //        NSDictionary *appInfo = [urlschemes objectForKey:URL.scheme];
+        //        NSString *name =[appInfo objectForKey:@"name"];
         
-//        if ([[UIApplication sharedApplication] canOpenURL:URL]) {
-//            if (!name) {
-//                name = URL.scheme;
-//            }
-//            [self alertWithTitle:[NSString stringWithFormat:@"即将打开%@",name] message:@"如果不是本人操作，请取消" action1Title:@"取消" action2Title:@"打开" action1:^{
-//
-//                return;
-//            } action2:^{
-//                [self SafariOpenURL:URL];
-//            }];
-//        }else{
-//            if (!appInfo) return;
-//            NSString *urlString = [appInfo objectForKey:@"url"];
-//            if (!urlString) return;
-//            NSURL *appstoreURL = [NSURL URLWithString:urlString];
-//            [self alertWithTitle:[NSString stringWithFormat:@"前往Appstore下载"] message:@"你还没安装该应用，是否前往Appstore下载？" action1Title:@"取消" action2Title:@"去下载" action1:^{
-//                return;
-//            } action2:^{
-//                [self SafariOpenURL:appstoreURL];
-//            }];
-//        }
+        //        if ([[UIApplication sharedApplication] canOpenURL:URL]) {
+        //            if (!name) {
+        //                name = URL.scheme;
+        //            }
+        //            [self alertWithTitle:[NSString stringWithFormat:@"即将打开%@",name] message:@"如果不是本人操作，请取消" action1Title:@"取消" action2Title:@"打开" action1:^{
+        //
+        //                return;
+        //            } action2:^{
+        //                [self SafariOpenURL:URL];
+        //            }];
+        //        }else{
+        //            if (!appInfo) return;
+        //            NSString *urlString = [appInfo objectForKey:@"url"];
+        //            if (!urlString) return;
+        //            NSURL *appstoreURL = [NSURL URLWithString:urlString];
+        //            [self alertWithTitle:[NSString stringWithFormat:@"前往Appstore下载"] message:@"你还没安装该应用，是否前往Appstore下载？" action1Title:@"取消" action2Title:@"去下载" action1:^{
+        //                return;
+        //            } action2:^{
+        //                [self SafariOpenURL:appstoreURL];
+        //            }];
+        //        }
     }
 }
 
