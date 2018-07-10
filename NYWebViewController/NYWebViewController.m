@@ -380,7 +380,7 @@ static MessageBlock messageCallback = nil;
     }
     
     if (_showHostLabel && self.hostLable) {
-        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 125);
+        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 110);
     }
 
 }
