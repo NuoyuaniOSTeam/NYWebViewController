@@ -58,13 +58,35 @@
         }
             
         case 2:{
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"html"];
-            _webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
+            //NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"html"];
+            //_webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
+            _webVC = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://58.58.203.126:8001/views/mobile/moble_gc/demo.html"]];
             [self addScriptMessageHandler];
             [self.navigationController pushViewController:_webVC animated:YES];
             // [self performSelector:@selector(TESTcallJS1:) withObject:_webVC afterDelay:1.0];
             _webVC.delegate = self;
             break;
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
         default:
             break;
@@ -90,12 +112,21 @@
                 //分享 取消
             }
         };
+    }else if([message.method isEqualToString:@"exit"]){
+        NSLog(@"%@",message);
     }
 }
 
 - (void)addScriptMessageHandler {
-    [_webVC addScriptMessageHandlerWithName:@[@"share",@"webViewApp"]];
+    [_webVC addScriptMessageHandlerWithName:@[@"share",@"webViewApp",@"exit"]];
+//    [_webVC addScriptMessageHandlerWithName:@[@"share",@"webViewApp",@"exit"] observeValue:^(WKUserContentController *userContentController, NYScriptMessage *message) {
+//        if ([message.method isEqualToString:@"share"]) {
+//
+//        }
+//    }];
 }
+
+
 
 
 - (void)TESTcallJS1:(NYWebViewController *) vc {

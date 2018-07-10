@@ -102,7 +102,7 @@ static MessageBlock messageCallback = nil;
 - (void)loadURL:(NSURL *)pageURL {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:pageURL];
     [request setValue:@"" forHTTPHeaderField:@"Cookie"];
-    [_webView loadRequest:request];
+    [self.webView loadRequest:request];
 }
 
 - (void)loadLocalHTMLURL:(NSURL *)url {
