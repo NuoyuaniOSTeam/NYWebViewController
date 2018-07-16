@@ -43,7 +43,6 @@ static MessageBlock messageCallback = nil;
     UIBarButtonItem * __weak _doneItem;
 }
 
-
 @property (nonatomic, strong) WKWebView *webView;
 //@property (strong, nonatomic) CALayer *progresslayer;
 @property (nonatomic, strong) WKWebViewConfiguration *config;
@@ -271,24 +270,28 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)goback{
-    
+    [self willGoBack];
+    if ([_webView canGoBack]) {
+        [_webView goBack];
+    }
 }
 
 - (void)goForward {
-    
+    [self willGoForward];
+    if ([_webView canGoForward]) {
+        [_webView goForward];
+    }
 }
 
 - (void)reload {
-    
+    [self willReload];
+    [self loadURL:_url];
 }
 
 - (void)didStartLoadWithNavigation:(WKNavigation *)navigation {
-    
+    [self didStartLoad];
 }
 
-- (void)didFinishLoad {
-
-}
 
 - (void)didFailLoadWithError:(NSError *)error{
     [self updateNavigationItems];
@@ -405,7 +408,7 @@ static MessageBlock messageCallback = nil;
     }
     
     if (_showHostLabel && self.hostLable) {
-        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 125);
+        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 110);
     }
     [self updateNavigationItems];
     
