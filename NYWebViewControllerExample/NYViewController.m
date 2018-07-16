@@ -28,6 +28,8 @@
     self.arr = @[@"测试一",@"测试二",@"测试三"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"testCell"];
     self.tableView.tableFooterView = [self tableFooterView];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:0 target:nil action:nil];
+
 }
 
 - (UIView *)tableFooterView
@@ -67,6 +69,9 @@
     switch (indexPath.row) {
         case 0:{
             NYWebViewController *vc = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://nyonline.cn"]];
+            vc.progressColor = [UIColor greenColor];
+            vc.showLoadingProgressView = NO;
+        
             [self.navigationController pushViewController:vc animated:YES];
             break;
             
