@@ -41,7 +41,7 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 @property (nonatomic, assign) BOOL showLoadingProgressView;
 // set progress color. default color
 @property (nonatomic, strong) UIColor *progressColor;
-@property (nonatomic, assign)CGFloat progressHeight;
+//@property (nonatomic, assign)CGFloat progressHeight;
 // default yes 是否显示导航栏title
 @property (nonatomic, assign) BOOL isUseWebPageTitle;
 // 导航栏titile长度

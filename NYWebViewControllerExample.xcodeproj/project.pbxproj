@@ -25,6 +25,7 @@
 		2F2BC09F20D8A2F600864348 /* NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08820D8A2F600864348 /* NYWebViewController.m */; };
 		2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */; };
 		2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2BC0A220D8B13A00864348 /* Main.storyboard */; };
+		B9D013D920FCA249007D0318 /* AXWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B9D013D820FCA249007D0318 /* AXWebViewController.bundle */; };
 		C72E8BEB20E620AA006BC276 /* html.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C72E8BEA20E620AA006BC276 /* html.bundle */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		2FD1EE75206384AC00A0D838 /* NYWebViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYWebViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE8D206384AD00A0D838 /* NYWebViewControllerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE98206384AD00A0D838 /* NYWebViewControllerExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9D013D820FCA249007D0318 /* AXWebViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AXWebViewController.bundle; sourceTree = "<group>"; };
 		C72E8BEA20E620AA006BC276 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,6 +186,7 @@
 		2F2BC08920D8A2F600864348 /* NYWebViewTool */ = {
 			isa = PBXGroup;
 			children = (
+				B9D013D820FCA249007D0318 /* AXWebViewController.bundle */,
 				C72E8BEA20E620AA006BC276 /* html.bundle */,
 			);
 			path = NYWebViewTool;
@@ -328,6 +331,7 @@
 				C72E8BEB20E620AA006BC276 /* html.bundle in Resources */,
 				2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */,
 				2F2BC09820D8A2F600864348 /* main.html in Resources */,
+				B9D013D920FCA249007D0318 /* AXWebViewController.bundle in Resources */,
 				2F2BC09520D8A2F600864348 /* LaunchScreen.storyboard in Resources */,
 				2F2BC09620D8A2F600864348 /* Info.plist in Resources */,
 				2F2BC09120D8A2F600864348 /* Info.plist in Resources */,

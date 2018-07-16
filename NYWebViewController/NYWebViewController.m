@@ -27,6 +27,12 @@
 #define iphoneX_5_8 ([UIScreen mainScreen].bounds.size.height==812.0f)
 #define kProgressViewHeight 1.5f
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+@interface UIProgressView (WebKit)
+/// Hidden when progress approach 1.0 Default is NO.
+@property(assign, nonatomic) BOOL ax_hiddenWhenProgressApproachFullSize;
+@end
+#endif
 
 static MessageBlock messageCallback = nil;
 @interface NYWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>{
@@ -34,15 +40,22 @@ static MessageBlock messageCallback = nil;
     NYSecurityPolicy *_securityPolicy;
     WKWebViewConfiguration *_configuration;
     BOOL _isLoadLocal;
+    UIBarButtonItem * __weak _doneItem;
 }
 
 
 @property (nonatomic, strong) WKWebView *webView;
-@property (strong, nonatomic) CALayer *progresslayer;
+//@property (strong, nonatomic) CALayer *progresslayer;
 @property (nonatomic, strong) WKWebViewConfiguration *config;
 @property (nonatomic, retain) NSArray *messageHandlerName;
 @property (nonatomic, strong) UILabel *hostLable;
 
+@property (nonatomic, strong) UIProgressView *progressView;
+
+/// Navigation back bar button item.
+@property(strong, nonatomic) UIBarButtonItem *navigationBackBarButtonItem;
+/// Navigation close bar button item.
+@property(strong, nonatomic) UIBarButtonItem *navigationCloseBarButtonItem;
 
 @end
 
@@ -92,19 +105,23 @@ static MessageBlock messageCallback = nil;
     }else{
         [self loadURL:_url];
     }
-    
+    [self updateNavigationItems];
+    self.navigationItem.leftItemsSupplementBackButton = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController.navigationBar addSubview:self.progressView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self updateNavigationItems];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [_progressView removeFromSuperview];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -149,9 +166,10 @@ static MessageBlock messageCallback = nil;
         _webView.allowsBackForwardNavigationGestures = YES;
 //        _webView.backgroundColor = [UIColor clearColor];
         _webView.scrollView.backgroundColor = [UIColor clearColor];
+       
         if (self.showLoadingProgressView) {
-            [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:NULL];
-            [self initWithProgressView];
+           [_webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:NULL];
+//            [self initWithProgressView];
         }
         
         if (self.isUseWebPageTitle) {
@@ -184,21 +202,27 @@ static MessageBlock messageCallback = nil;
 #pragma mark - kvo
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
     if ([keyPath isEqualToString:@"estimatedProgress"]) {
-        self.progresslayer.opacity = 1;
-        //不要让进度条倒着走...有时候goback会出现这种情况
-        if ([change[@"new"] floatValue] < [change[@"old"] floatValue]) {
-            return;
+        float progress = [[change objectForKey:NSKeyValueChangeNewKey] floatValue];
+        if (progress >= _progressView.progress) {
+            [_progressView setProgress:progress animated:YES];
+        } else {
+            [_progressView setProgress:progress animated:NO];
         }
-        self.progresslayer.frame = CGRectMake(0, 0, self.view.bounds.size.width * [change[@"new"] floatValue], kProgressViewHeight);
-        NSLog(@"%f",[change[@"new"] floatValue]);
-        if ([change[@"new"] floatValue] == 1) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.progresslayer.opacity = 0;
-            });
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                self.progresslayer.frame = CGRectMake(0, 0, 0, kProgressViewHeight);
-            });
-        }
+//        self.progresslayer.opacity = 1;
+//        //不要让进度条倒着走...有时候goback会出现这种情况
+//        if ([change[@"new"] floatValue] < [change[@"old"] floatValue]) {
+//            return;
+//        }
+//        self.progresslayer.frame = CGRectMake(0, 0, self.view.bounds.size.width * [change[@"new"] floatValue], kProgressViewHeight);
+//        NSLog(@"%f",[change[@"new"] floatValue]);
+//        if ([change[@"new"] floatValue] == 1) {
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                self.progresslayer.opacity = 0;
+//            });
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                self.progresslayer.frame = CGRectMake(0, 0, 0, kProgressViewHeight);
+//            });
+//        }
     }
     else if ([keyPath isEqualToString:@"title"]){
         if (object == self.webView) {
@@ -239,6 +263,8 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)didStartLoad{
+     self.navigationItem.title = @"加载中...";
+    [self updateNavigationItems];
     if (_delegate && [_delegate respondsToSelector:@selector(webViewControllerDidStartLoad:)]) {
         [_delegate webViewControllerDidStartLoad:self];
     }
@@ -265,6 +291,7 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)didFailLoadWithError:(NSError *)error{
+    [self updateNavigationItems];
     if (error.code == NSURLErrorCancelled) {
         [_webView reload];
         return;
@@ -278,6 +305,7 @@ static MessageBlock messageCallback = nil;
     if (_delegate && [_delegate respondsToSelector:@selector(webViewController:didFailLoadWithError:)]) {
         [_delegate webViewController:self didFailLoadWithError:error];
     }
+    
 }
 
 
@@ -379,7 +407,8 @@ static MessageBlock messageCallback = nil;
     if (_showHostLabel && self.hostLable) {
         _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 125);
     }
-
+    [self updateNavigationItems];
+    
 }
 
 /**
@@ -432,6 +461,7 @@ static MessageBlock messageCallback = nil;
  *  @param decisionHandler  是否调转block
  */
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    [self updateNavigationItems];
     if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:decidePolicyForNavigationAction:decisionHandler:)]) {
         [self.delegate webViewController:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
     }else{
@@ -481,26 +511,120 @@ static MessageBlock messageCallback = nil;
     NSLog(@"webViewWebContentProcessDidTerminate");
 }
 
-#pragma  mark - progress
-- (void)initWithProgressView{
-    UIView *progress = [[UIView alloc]initWithFrame:CGRectMake(0, (44-kProgressViewHeight), CGRectGetWidth(self.view.frame), kProgressViewHeight)];
-    progress.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar addSubview:progress];
-    [progress.layer addSublayer:self.progresslayer];
+#pragma  mark - Navigation
+- (void)updateNavigationItems {
+    [self.navigationItem setLeftBarButtonItems:nil animated:NO];
+    if (self.webView.canGoBack) {// Web view can go back means a lot requests exist.
+        UIBarButtonItem *spaceButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spaceButtonItem.width = -6.5;
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+        if (self.navigationController.viewControllers.count == 1) {
+            [self.navigationItem setLeftBarButtonItems:@[spaceButtonItem, self.navigationBackBarButtonItem, self.navigationCloseBarButtonItem] animated:NO];
+        } else {
+            [self.navigationItem setLeftBarButtonItems:@[self.navigationCloseBarButtonItem] animated:NO];
+        }
+    } else {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+        [self.navigationItem setLeftBarButtonItems:nil animated:NO];
+    }
 }
 
-- (CALayer *)progresslayer {
-    if (!_progresslayer) {
-        _progresslayer = [CALayer layer];
-        _progresslayer.frame = CGRectMake(0, 0, 0, kProgressViewHeight);
-        _progresslayer.backgroundColor = self.progressColor.CGColor;
+- (UIBarButtonItem *)navigationCloseBarButtonItem {
+    if (_navigationCloseBarButtonItem) return _navigationCloseBarButtonItem;
+    if (self.navigationItem.rightBarButtonItem == _doneItem && self.navigationItem.rightBarButtonItem != nil) {
+        _navigationCloseBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:0 target:self action:@selector(doneButtonClicked:)];
+    } else {
+        _navigationCloseBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:0 target:self action:@selector(navigationIemHandleClose:)];
     }
-    return _progresslayer;
+    return _navigationCloseBarButtonItem;
+}
+
+- (UIBarButtonItem *)navigationBackBarButtonItem {
+    if (_navigationBackBarButtonItem) return _navigationBackBarButtonItem;
+    UIImage* backItemImage = [[[UINavigationBar appearance] backIndicatorImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]?:[[UIImage imageNamed:@"AXWebViewController.bundle/backItemImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIGraphicsBeginImageContextWithOptions(backItemImage.size, NO, backItemImage.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0, backItemImage.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGRect rect = CGRectMake(0, 0, backItemImage.size.width, backItemImage.size.height);
+    CGContextClipToMask(context, rect, backItemImage.CGImage);
+    [[self.navigationController.navigationBar.tintColor colorWithAlphaComponent:0.5] setFill];
+    CGContextFillRect(context, rect);
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImage* backItemHlImage = newImage?:[[UIImage imageNamed:@"AXWebViewController.bundle/backItemImage-hl"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIButton* backButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    NSDictionary *attr = [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal];
+    if (attr) {
+        [backButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"返回" attributes:attr] forState:UIControlStateNormal];
+        UIOffset offset = [[UIBarButtonItem appearance] backButtonTitlePositionAdjustmentForBarMetrics:UIBarMetricsDefault];
+        backButton.titleEdgeInsets = UIEdgeInsetsMake(offset.vertical, offset.horizontal, 0, 0);
+        backButton.imageEdgeInsets = UIEdgeInsetsMake(offset.vertical, offset.horizontal, 0, 0);
+    } else {
+        [backButton setTitle:@"返回" forState:UIControlStateNormal];
+        [backButton setTitleColor:self.navigationController.navigationBar.tintColor forState:UIControlStateNormal];
+        [backButton setTitleColor:[self.navigationController.navigationBar.tintColor colorWithAlphaComponent:0.5] forState:UIControlStateHighlighted];
+        [backButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    }
+    [backButton setImage:backItemImage forState:UIControlStateNormal];
+    [backButton setImage:backItemHlImage forState:UIControlStateHighlighted];
+    [backButton sizeToFit];
+    
+    [backButton addTarget:self action:@selector(navigationItemHandleBack:) forControlEvents:UIControlEventTouchUpInside];
+    _navigationBackBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    return _navigationBackBarButtonItem;
+}
+
+- (void)doneButtonClicked:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)navigationIemHandleClose:(UIBarButtonItem *)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)navigationItemHandleBack:(UIBarButtonItem *)sender {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+    if ([_webView canGoBack]) {
+        [_webView goBack];
+//        _navigation = [_webView goBack];
+        return;
+    }
+#else
+    if ([self.webView canGoBack]) {
+        [self.webView goBack];
+        return;
+    }
+#endif
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma  mark - progress
+- (void)setProgressColor:(UIColor *)progressColor
+{
+    _progressColor = progressColor;
+}
+
+- (UIProgressView *)progressView {
+    if (_progressView) return _progressView;
+    CGFloat progressBarHeight = kProgressViewHeight;
+    CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
+    CGRect barFrame = CGRectMake(0, navigationBarBounds.size.height - progressBarHeight, navigationBarBounds.size.width, progressBarHeight);
+    _progressView = [[UIProgressView alloc] initWithFrame:barFrame];
+    _progressView.trackTintColor = [UIColor clearColor];
+    _progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    _progressView.progressTintColor = self.progressColor;
+    _progressView.ax_hiddenWhenProgressApproachFullSize = YES;
+    return _progressView;
 }
 
 - (void)setShowLoadingProgressView:(BOOL)showLoadingProgressView {
     _showLoadingProgressView = showLoadingProgressView;
-    self.progresslayer.hidden = !showLoadingProgressView;
+    if (!showLoadingProgressView) {
+        self.progressView.ax_hiddenWhenProgressApproachFullSize = NO;
+        self.progressView.hidden = YES;
+    }
 }
 
 #pragma mark - js
@@ -584,7 +708,9 @@ static MessageBlock messageCallback = nil;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     _webView.UIDelegate = nil;
     _webView.navigationDelegate = nil;
-    [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
+    if (self.showLoadingProgressView) {
+        [_webView removeObserver:self forKeyPath:@"estimatedProgress"];
+    }
     [_webView removeObserver:self forKeyPath:@"title"];
 }
 
@@ -595,8 +721,66 @@ static MessageBlock messageCallback = nil;
 
 @end
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+@implementation UIProgressView (WebKit)
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // Inject "-popViewControllerAnimated:"
+        Method originalMethod = class_getInstanceMethod(self, @selector(setProgress:));
+        Method swizzledMethod = class_getInstanceMethod(self, @selector(ax_setProgress:));
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+        
+        originalMethod = class_getInstanceMethod(self, @selector(setProgress:animated:));
+        swizzledMethod = class_getInstanceMethod(self, @selector(ax_setProgress:animated:));
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    });
+}
 
+- (void)ax_setProgress:(float)progress {
+    [self ax_setProgress:progress];
+    
+    [self checkHiddenWhenProgressApproachFullSize];
+}
 
+- (void)ax_setProgress:(float)progress animated:(BOOL)animated {
+    [self ax_setProgress:progress animated:animated];
+    
+    [self checkHiddenWhenProgressApproachFullSize];
+}
+
+- (void)checkHiddenWhenProgressApproachFullSize {
+    if (!self.ax_hiddenWhenProgressApproachFullSize) {
+        return;
+    }
+    
+    float progress = self.progress;
+    if (progress < 1) {
+        if (self.hidden) {
+            self.hidden = NO;
+        }
+    } else if (progress >= 1) {
+        [UIView animateWithDuration:0.35 delay:0.15 options:7 animations:^{
+            self.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                self.hidden = YES;
+                self.progress = 0.0;
+                self.alpha = 1.0;
+            }
+        }];
+    }
+}
+
+- (BOOL)ax_hiddenWhenProgressApproachFullSize {
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setAx_hiddenWhenProgressApproachFullSize:(BOOL)ax_hiddenWhenProgressApproachFullSize {
+    objc_setAssociatedObject(self, @selector(ax_hiddenWhenProgressApproachFullSize), @(ax_hiddenWhenProgressApproachFullSize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+@end
+#endif
 
 
 
