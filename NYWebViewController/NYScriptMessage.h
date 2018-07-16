@@ -10,6 +10,7 @@
 
 @interface NYScriptMessage : NSObject
 
+@property (nonatomic, copy) NSString *handlerName;
 @property (nonatomic, copy) NSString *method;
 @property (nonatomic, copy) NSDictionary *params;
 @property (nonatomic, copy) NSString *callback;

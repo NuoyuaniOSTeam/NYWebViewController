@@ -10,7 +10,6 @@
 #import <objc/runtime.h>
 #import "WKWebView+NYWebCookie.h"
 #import "WKWebView+NYWebCache.h"
-#import "NSURL+NYTool.h"
 
 #ifndef kBY404NotFoundHTMLPath
 #define kBY404NotFoundHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/404" ofType:@"html"]
@@ -433,76 +432,48 @@ static MessageBlock messageCallback = nil;
  *  @param decisionHandler  是否调转block
  */
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    
-    NSLog(@"URL: %@", navigationAction.request.URL.absoluteString);
-    NSString *scheme = navigationAction.request.URL.scheme.lowercaseString;
-    if (![scheme containsString:@"http"] && ![scheme containsString:@"about"] && ![scheme containsString:@"file"]) {
-        // 对于跨域，需要手动跳转， 用系统浏览器（Safari）打开
-        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否打开appstore？" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [webView goBack];
-            }];
-            UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [NSURL SafariOpenURL:navigationAction.request.URL];
-            }];
-            [alert addAction:ActionOne];
-            [alert addAction:ActionTwo];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-            });
-            
-            decisionHandler(WKNavigationActionPolicyCancel);
-            return;
-        }
-        
-        [NSURL openURL:navigationAction.request.URL];
-        // 不允许web内跳转
-        decisionHandler(WKNavigationActionPolicyCancel);
-        
-    } else {
-        
-        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"])
-        {
-            [NSURL openURL:navigationAction.request.URL];
-            decisionHandler(WKNavigationActionPolicyCancel);
-            return;
-        }
-        
-        decisionHandler(WKNavigationActionPolicyAllow);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:decidePolicyForNavigationAction:decisionHandler:)]) {
+        [self.delegate webViewController:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
     }
-}
-
-//- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(nonnull NSURLAuthenticationChallenge *)challenge completionHandler:(nonnull void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
-//    NSLog(@"didReceiveAuthenticationChallenge");
-//    // !!!: Do add the security policy if using a custom credential.
-//    NSURLSessionAuthChallengeDisposition disposition = NSURLSessionAuthChallengePerformDefaultHandling;
-//    __block NSURLCredential *credential = nil;
+//    NSLog(@"URL: %@", navigationAction.request.URL.absoluteString);
+//    NSString *scheme = navigationAction.request.URL.scheme.lowercaseString;
+//    if (![scheme containsString:@"http"] && ![scheme containsString:@"about"] && ![scheme containsString:@"file"]) {
+//        // 对于跨域，需要手动跳转， 用系统浏览器（Safari）打开
+//        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"]) {
+//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否打开appstore？" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                [webView goBack];
+//            }];
+//            UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                [NSURL SafariOpenURL:navigationAction.request.URL];
+//            }];
+//            [alert addAction:ActionOne];
+//            [alert addAction:ActionTwo];
 //
-//    if (self.challengeHandler) {
-//        disposition = self.challengeHandler(webView, challenge, &credential);
-//    } else {
-//        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-//            if ([self.securityPolicy evaluateServerTrust:challenge.protectionSpace.serverTrust forDomain:challenge.protectionSpace.host]) {
-//                credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-//                if (credential) {
-//                    disposition = NSURLSessionAuthChallengeUseCredential;
-//                } else {
-//                    disposition = NSURLSessionAuthChallengePerformDefaultHandling;
-//                }
-//            } else {
-//                disposition = NSURLSessionAuthChallengePerformDefaultHandling;
-//            }
-//        } else {
-//            disposition = NSURLSessionAuthChallengePerformDefaultHandling;
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+//            });
+//
+//            decisionHandler(WKNavigationActionPolicyCancel);
+//            return;
 //        }
-//    }
 //
-//    if (completionHandler) {
-//        completionHandler(disposition, credential);
+//        [NSURL openURL:navigationAction.request.URL];
+//        // 不允许web内跳转
+//        decisionHandler(WKNavigationActionPolicyCancel);
+//        
+//    } else {
+//
+//        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"])
+//        {
+//            [NSURL openURL:navigationAction.request.URL];
+//            decisionHandler(WKNavigationActionPolicyCancel);
+//            return;
+//        }
+//
+//        decisionHandler(WKNavigationActionPolicyAllow);
 //    }
-//}
+}
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
     NSLog(@"webViewWebContentProcessDidTerminate");

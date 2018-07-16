@@ -24,8 +24,9 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 - (void)webViewControllerDidStartLoad:(NYWebViewController *)webViewController;
 - (void)webViewControllerDidFinishLoad:(NYWebViewController *)webViewController;
 - (void)webViewController:(NYWebViewController *)webViewController didFailLoadWithError:(NSError *)error;
-- (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NYScriptMessage *)message;
 
+- (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NYScriptMessage *)message;
+- (void)webViewController:(NYWebViewController *)webViewController decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
 @end
 
 @interface NYWebViewController : UIViewController
@@ -59,6 +60,7 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 
 @property (nonatomic, assign) BOOL openCache;   //缓存
 
+- (void)loadURL:(NSURL *)pageURL;
 
 /** 重新加载webview */
 - (void)reload;

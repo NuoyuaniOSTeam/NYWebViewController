@@ -13,6 +13,24 @@
         </style>
         
         <script type="text/javascript">
+            //本方法兼容安卓与iOS
+            function callMobile(handlerName,handlerMethod,parameters){
+                //handlerName由iOS addScriptMessageHandler与andorid addJavascriptInterface 代码注入而来。
+                var dic = {'handlerName':handlerName,'method':handlerMethod,'params': parameters};
+                
+                if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
+                    window.webkit.messageHandlers[handlerName].postMessage(dic);
+                }else{
+                    //安卓传输不了js json对象
+                    window[handlerName][handlerMethod](JSON.stringify(dic));
+                }
+            }
+        
+            function callMobileNative(handlerName,handlerMethod,parameters){
+                callMobile("Native",handlerMethod,parameters);
+            }
+            
+            
             function call(text) {
                 var message = {
                     'method' : 'hello',
@@ -54,15 +72,33 @@
             window.webkit.messageHandlers.webViewApp.postMessage(message);
         }
         
+        function opensysSet() {
+           // var message = {
+                //'method' : 'openset'
+                //'params' : nil
+            //};
+            //window.webkit.messageHandlers.webViewApp.postMessage(message);
+            callMobile('webViewApp','openset','');
+        }
+        
         function share(){
-            var message = {
-                'method' : 'share',
-                'params' : {
-                    'url': 'www.baidu.com',
-                    'titile': '不知道问百度'
-                }
-            };
-            window.webkit.messageHandlers.share.postMessage(message);
+<!--            var message = {-->
+<!--                'method' : 'share',-->
+<!--                'params' : {-->
+<!--                    'url': 'www.baidu.com',-->
+<!--                    'titile': '不知道问百度'-->
+<!--                }-->
+<!--            };-->
+        var par = {
+            'url': 'www.baidu.com',
+            'titile': '不知道问百度'
+        }
+            //window.webkit.messageHandlers.share.postMessage(message);
+            callMobile('share','share',par)
+        }
+        
+        function appStroe(urlstr){
+            callMobile('webViewApp','appStroe',{'url':urlstr})
         }
         
         </script>
@@ -74,7 +110,9 @@
         </span><br />
         <button onclick="call('Hello World!')">JS调OC</button><br /><br /><br />
         <button onclick="pop()">返回</button><br /><br /><br />
-         <button onclick="openUrl('http://www.baidu.com/')">打开百度</button><br /><br /><br />
-         <button onclick="share()">分享</button>
+        <button onclick="opensysSet()">打开设置</button><br /><br /><br />
+        <button onclick="appStroe('https://itunes.apple.com/us/app/id/1287884939')">appStroe</button><br /><br /><br />
+        <button onclick="openUrl('http://www.baidu.com/')">打开百度</button><br /><br /><br />
+        <button onclick="share()">分享</button>
     </body>
 </html>

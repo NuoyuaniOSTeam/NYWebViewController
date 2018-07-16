@@ -12,7 +12,7 @@
 
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@:{method:%@,params:%@,callback:%@}>", NSStringFromClass([self class]),self.method, self.params, self.callback];
+    return [NSString stringWithFormat:@"<%@:{handlerName:%@,method:%@,params:%@,callback:%@}>", NSStringFromClass([self class]),self.handlerName,self.method, self.params, self.callback];
 }
 
 @end

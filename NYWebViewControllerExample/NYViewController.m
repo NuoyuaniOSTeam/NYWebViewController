@@ -8,6 +8,8 @@
 
 #import "NYViewController.h"
 #import "NYWebViewController.h"
+#import "NSURL+NYTool.h"
+#define iOS10_0Later ([UIDevice currentDevice].systemVersion.floatValue >= 10.0f)
 
 @interface NYViewController ()<UITableViewDelegate, UITableViewDataSource, NYWebViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -58,35 +60,13 @@
         }
             
         case 2:{
-            //NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"html"];
-            //_webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
-            _webVC = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://58.58.203.126:8001/views/mobile/moble_gc/demo.html"]];
+            NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"html"];
+            _webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
             [self addScriptMessageHandler];
             [self.navigationController pushViewController:_webVC animated:YES];
             // [self performSelector:@selector(TESTcallJS1:) withObject:_webVC afterDelay:1.0];
             _webVC.delegate = self;
             break;
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
         }
         default:
             break;
@@ -112,8 +92,13 @@
                 //分享 取消
             }
         };
-    }else if([message.method isEqualToString:@"exit"]){
-        NSLog(@"%@",message);
+    }else if([message.method isEqualToString:@"openappurl"]){
+        
+    }else if ([message.method isEqualToString:@"openset"]) {
+        [self openAppSetting];
+    }else if([message.method isEqualToString:@"appStroe"]){
+        NSString *str = [message.params objectForKey:@"url"];
+        [_webVC loadURL:[NSURL URLWithString:str]];
     }
 }
 
@@ -136,6 +121,73 @@
     }];
 }
 
+- (void)openAppSetting{
+    NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    if ([[UIApplication sharedApplication] canOpenURL:url])
+    {
+        if (iOS10_0Later) {
+            [self openUrl:url completion:^(BOOL success) {
+                NSLog(@"跳转设置%@",success?@"成功":@"失败");
+            }];
+        }else{
+            [self openUrl:url];
+        }
+    }
+}
+
+//iOS10之前跳转
+- (void)openUrl:(NSURL *)url{
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+//iOS10之后跳转
+- (void)openUrl:(NSURL *)url completion:(void(^)(BOOL success))block{
+    [[UIApplication sharedApplication] openURL:url options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO} completionHandler:^(BOOL success) {
+        if(block)
+            block(success);
+    }];
+}
+
+- (void)webViewController:(NYWebViewController *)webViewController decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSLog(@"URL: %@", navigationAction.request.URL.absoluteString);
+    NSString *scheme = navigationAction.request.URL.scheme.lowercaseString;
+    if (![scheme containsString:@"http"] && ![scheme containsString:@"about"] && ![scheme containsString:@"file"]) {
+        // 对于跨域，需要手动跳转， 用系统浏览器（Safari）打开
+        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否打开appstore？" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [_webVC goback];
+            }];
+            UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [NSURL SafariOpenURL:navigationAction.request.URL];
+            }];
+            [alert addAction:ActionOne];
+            [alert addAction:ActionTwo];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+            });
+            
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
+        }
+        
+        [NSURL openURL:navigationAction.request.URL];
+        // 不允许web内跳转
+        decisionHandler(WKNavigationActionPolicyCancel);
+        
+    } else {
+        
+        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"])
+        {
+            [NSURL openURL:navigationAction.request.URL];
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
+        }
+        
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
