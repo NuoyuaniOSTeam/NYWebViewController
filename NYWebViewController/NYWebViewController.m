@@ -36,7 +36,6 @@ static MessageBlock messageCallback = nil;
     BOOL _isLoadLocal;
 }
 
-
 @property (nonatomic, strong) WKWebView *webView;
 @property (strong, nonatomic) CALayer *progresslayer;
 @property (nonatomic, strong) WKWebViewConfiguration *config;
@@ -245,24 +244,28 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)goback{
-    
+    [self willGoBack];
+    if ([_webView canGoBack]) {
+        [_webView goBack];
+    }
 }
 
 - (void)goForward {
-    
+    [self willGoForward];
+    if ([_webView canGoForward]) {
+        [_webView goForward];
+    }
 }
 
 - (void)reload {
-    
+    [self willReload];
+    [self loadURL:_url];
 }
 
 - (void)didStartLoadWithNavigation:(WKNavigation *)navigation {
-    
+    [self didStartLoad];
 }
 
-- (void)didFinishLoad {
-
-}
 
 - (void)didFailLoadWithError:(NSError *)error{
     if (error.code == NSURLErrorCancelled) {
