@@ -434,6 +434,8 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:decidePolicyForNavigationAction:decisionHandler:)]) {
         [self.delegate webViewController:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
+    }else{
+        decisionHandler(WKNavigationActionPolicyAllow);
     }
 //    NSLog(@"URL: %@", navigationAction.request.URL.absoluteString);
 //    NSString *scheme = navigationAction.request.URL.scheme.lowercaseString;
