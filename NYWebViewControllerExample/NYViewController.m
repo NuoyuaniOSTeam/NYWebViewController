@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *arr;
 @property (nonatomic, strong) NYWebViewController *webVC;
+@property (nonatomic, strong) UIView *tableFooterView;
 @end
 
 @implementation NYViewController
@@ -26,9 +27,26 @@
     self.tableView.dataSource = self;
     self.arr = @[@"测试一",@"测试二",@"测试三"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"testCell"];
-    self.tableView.tableFooterView = [UIView new];
-    
-    
+    self.tableView.tableFooterView = [self tableFooterView];
+}
+
+- (UIView *)tableFooterView
+{
+    if (!_tableFooterView) {
+        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+        but.frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
+        [but addTarget:self action:@selector(deleteCache) forControlEvents:UIControlEventTouchUpInside];
+        [but setTitle:@"清除缓存" forState:0];
+        [but setTitleColor:[UIColor blueColor] forState:0];
+        _tableFooterView = but;
+    }
+    return _tableFooterView;
+}
+
+- (void)deleteCache
+{
+    NYWebViewController *webView = [[NYWebViewController alloc] init];
+    [webView deleteAllWebCache];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
