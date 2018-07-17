@@ -128,7 +128,6 @@ static MessageBlock messageCallback = nil;
 #pragma mark - load html
 - (void)loadURL:(NSURL *)pageURL {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:pageURL];
-    [request setValue:@"" forHTTPHeaderField:@"Cookie"];
     if (_showHostLabel && _hostLable && request.URL.host) {
         _hostLable.text = [NSString stringWithFormat:@"网页由%@提供",request.URL.host];
         [_hostLable sizeToFit];
@@ -155,7 +154,6 @@ static MessageBlock messageCallback = nil;
 }
 
 - (WKWebView *)webView {
-
     if (!_webView) {
         _webView = [[WKWebView alloc]initWithFrame:self.view.bounds configuration:self.config];
         _webView.navigationDelegate = self;
@@ -181,7 +179,7 @@ static MessageBlock messageCallback = nil;
     if (_config == nil) {
         _config = [[WKWebViewConfiguration alloc] init];
         _config.userContentController = [[WKUserContentController alloc] init];
-        _config.allowsInlineMediaPlayback = YES;        // 允许在线播放
+        //_config.allowsInlineMediaPlayback = YES;        // 允许在线播放
         //_config.allowsAirPlayForMediaPlayback = YES;  //允许视频播放
         _config.preferences = [[WKPreferences alloc] init];
         _config.preferences.minimumFontSize = 10;
@@ -205,21 +203,6 @@ static MessageBlock messageCallback = nil;
         } else {
             [_progressView setProgress:progress animated:NO];
         }
-//        self.progresslayer.opacity = 1;
-//        //不要让进度条倒着走...有时候goback会出现这种情况
-//        if ([change[@"new"] floatValue] < [change[@"old"] floatValue]) {
-//            return;
-//        }
-//        self.progresslayer.frame = CGRectMake(0, 0, self.view.bounds.size.width * [change[@"new"] floatValue], kProgressViewHeight);
-//        NSLog(@"%f",[change[@"new"] floatValue]);
-//        if ([change[@"new"] floatValue] == 1) {
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                self.progresslayer.opacity = 0;
-//            });
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                self.progresslayer.frame = CGRectMake(0, 0, 0, kProgressViewHeight);
-//            });
-//        }
     }
     else if ([keyPath isEqualToString:@"title"]){
         if (object == self.webView) {
@@ -259,14 +242,6 @@ static MessageBlock messageCallback = nil;
     }
 }
 
-- (void)didStartLoad{
-     self.navigationItem.title = @"加载中...";
-    [self updateNavigationItems];
-    if (_delegate && [_delegate respondsToSelector:@selector(webViewControllerDidStartLoad:)]) {
-        [_delegate webViewControllerDidStartLoad:self];
-    }
-}
-
 - (void)goback{
     [self willGoBack];
     if ([_webView canGoBack]) {
@@ -287,7 +262,11 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)didStartLoadWithNavigation:(WKNavigation *)navigation {
-    [self didStartLoad];
+    self.navigationItem.title = @"加载中...";
+    [self updateNavigationItems];
+    if (_delegate && [_delegate respondsToSelector:@selector(webViewControllerDidStartLoad:)]) {
+        [_delegate webViewControllerDidStartLoad:self];
+    }
 }
 
 
