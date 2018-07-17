@@ -42,8 +42,6 @@ static MessageBlock messageCallback = nil;
     BOOL _isLoadLocal;
     UIBarButtonItem * __weak _doneItem;
 }
-
-@property (nonatomic, strong) WKWebView *webView;
 //@property (strong, nonatomic) CALayer *progresslayer;
 @property (nonatomic, strong) WKWebViewConfiguration *config;
 @property (nonatomic, retain) NSArray *messageHandlerName;

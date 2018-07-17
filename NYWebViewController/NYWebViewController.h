@@ -37,6 +37,7 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithLocalHtmlURL:(NSURL *)url;
 
+@property (nonatomic, strong) WKWebView *webView;
 // show progress default yes
 @property (nonatomic, assign) BOOL showLoadingProgressView;
 // set progress color. default color

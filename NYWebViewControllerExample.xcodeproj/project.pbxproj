@@ -26,6 +26,7 @@
 		2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */; };
 		2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2BC0A220D8B13A00864348 /* Main.storyboard */; };
 		B9D013D920FCA249007D0318 /* AXWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B9D013D820FCA249007D0318 /* AXWebViewController.bundle */; };
+		B9D013E020FCC158007D0318 /* UINavigationController+NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D013DF20FCC158007D0318 /* UINavigationController+NYWebViewController.m */; };
 		C72E8BEB20E620AA006BC276 /* html.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C72E8BEA20E620AA006BC276 /* html.bundle */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +82,8 @@
 		2FD1EE8D206384AD00A0D838 /* NYWebViewControllerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE98206384AD00A0D838 /* NYWebViewControllerExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9D013D820FCA249007D0318 /* AXWebViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AXWebViewController.bundle; sourceTree = "<group>"; };
+		B9D013DE20FCC158007D0318 /* UINavigationController+NYWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+NYWebViewController.h"; sourceTree = "<group>"; };
+		B9D013DF20FCC158007D0318 /* UINavigationController+NYWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+NYWebViewController.m"; sourceTree = "<group>"; };
 		C72E8BEA20E620AA006BC276 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,6 +162,7 @@
 		2F2BC07D20D8A2F600864348 /* NYWebViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B9D013DA20FCC0FA007D0318 /* UINavigationController */,
 				2F2BC08720D8A2F600864348 /* NYWebViewController.h */,
 				2F2BC08820D8A2F600864348 /* NYWebViewController.m */,
 				2F2BC07E20D8A2F600864348 /* NYScriptMessage.h */,
@@ -220,6 +224,15 @@
 				2FD1EE98206384AD00A0D838 /* NYWebViewControllerExampleUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B9D013DA20FCC0FA007D0318 /* UINavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				B9D013DE20FCC158007D0318 /* UINavigationController+NYWebViewController.h */,
+				B9D013DF20FCC158007D0318 /* UINavigationController+NYWebViewController.m */,
+			);
+			path = UINavigationController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -369,6 +382,7 @@
 				2F2BC09920D8A2F600864348 /* main.m in Sources */,
 				2F2BC09F20D8A2F600864348 /* NYWebViewController.m in Sources */,
 				2F2BC09320D8A2F600864348 /* AppDelegate.m in Sources */,
+				B9D013E020FCC158007D0318 /* UINavigationController+NYWebViewController.m in Sources */,
 				2F2BC09A20D8A2F600864348 /* NYViewController.m in Sources */,
 				2F2BC09B20D8A2F600864348 /* NYScriptMessage.m in Sources */,
 				2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */,
