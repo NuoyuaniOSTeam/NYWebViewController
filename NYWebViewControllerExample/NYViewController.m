@@ -87,8 +87,8 @@
             _webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
             [self addScriptMessageHandler];
             [self.navigationController pushViewController:_webVC animated:YES];
-            // [self performSelector:@selector(TESTcallJS1:) withObject:_webVC afterDelay:1.0];
             _webVC.delegate = self;
+            _webVC.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"调用JS" style:0 target:self action:@selector(rightClick)];
             break;
         }
         default:
@@ -115,13 +115,15 @@
                 //分享 取消
             }
         };
-    }else if([message.method isEqualToString:@"openappurl"]){
-        
     }else if ([message.method isEqualToString:@"openset"]) {
         [self openAppSetting];
     }else if([message.method isEqualToString:@"appStroe"]){
         NSString *str = [message.params objectForKey:@"url"];
         [_webVC loadURL:[NSURL URLWithString:str]];
+    }else if([message.method isEqualToString:@"tobackpage"]){
+        [self.navigationController popViewControllerAnimated:YES];
+    }else if([message.method isEqualToString:@"hello"]) {
+        NSLog(@"%@",message);
     }
 }
 
@@ -135,11 +137,13 @@
 }
 
 
+- (void)rightClick {
+    [self testcallJS:_webVC];
+}
 
-
-- (void)TESTcallJS1:(NYWebViewController *) vc {
+- (void)testcallJS:(NYWebViewController *) vc {
     //NYWebViewController *v = vc;
-    [vc webViewControllerCallJS:@"alert('调用JS成功1')" handler:^(id response, NSError *error) {
+    [vc webViewControllerCallJS:@"callJs('oc原生调用js')" handler:^(id response, NSError *error) {
         NSLog(@"调用js回调事件");
     }];
 }
