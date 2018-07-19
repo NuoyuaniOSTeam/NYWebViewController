@@ -123,9 +123,9 @@
 
 - (void)testcallJS:(NYWebViewController *) vc {
     //NYWebViewController *v = vc;
-    [vc webViewControllerCallJS:@"callJs('oc原生调用js')" completeBlock:^(id response, NSError *error) {
-        NSLog(@"调用js回调事件");
-    }];
+//    [vc webViewControllerCallJS:@"callJs('oc原生调用js')" completeBlock:^(id response, NSError *error) {
+//        NSLog(@"调用js回调事件");
+//    }];
 }
 
 - (void)openAppSetting{
