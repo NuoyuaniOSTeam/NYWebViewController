@@ -59,8 +59,6 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 
 @property (nonatomic, weak) id<NYWebViewControllerDelegate> delegate;
 
-@property (nonatomic, assign) BOOL openCache;   //缓存（未完成）
-
 - (void)loadURL:(NSURL *)pageURL;
 
 /** 重新加载webview */
@@ -71,17 +69,12 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 /** 下一级 */
 - (void)goForward;
 
-/** 读取本地磁盘的cookies，包括WKWebview的cookies和sharedHTTPCookieStorage存储的cookies */
-- (NSMutableArray *)WKSharedHTTPCookieStorage;
+
 
 /** 提供cookies插入，用于loadRequest 网页之前*/
 - (void)setcookie:(NSHTTPCookie *)cookie;
 
-/** 清除所有的cookies */
-- (void)deleteAllWKCookies;
 
-/** 清除所有缓存（cookie除外） */
-- (void)deleteAllWebCache;
 
 
 /** JS 调用OC 添加 messageHandler

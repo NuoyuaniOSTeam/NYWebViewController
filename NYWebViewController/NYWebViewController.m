@@ -9,7 +9,6 @@
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
 #import "WKWebView+NYWebCookie.h"
-#import "WKWebView+NYWebCache.h"
 
 #ifndef kBY404NotFoundHTMLPath
 #define kBY404NotFoundHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/404" ofType:@"html"]
@@ -687,23 +686,6 @@ static MessageBlock messageCallback = nil;
     [self.webView insertCookie:cookie];
 }
 
-/** 获取本地磁盘的cookies */
-- (NSMutableArray *)WKSharedHTTPCookieStorage
-{
-    return [self.webView sharedHTTPCookieStorage];
-}
-
-/** 删除所有的cookies */
-- (void)deleteAllWKCookies
-{
-    [self.webView deleteAllWKCookies];
-}
-
-/** 删除所有缓存不包括cookies */
-- (void)deleteAllWebCache
-{
-    [self.webView deleteAllWebCache];
-}
 
 #pragma mark - dealloc
 - (void)dealloc {

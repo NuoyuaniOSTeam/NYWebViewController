@@ -19,8 +19,6 @@
 		2F2BC09920D8A2F600864348 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC07A20D8A2F600864348 /* main.m */; };
 		2F2BC09A20D8A2F600864348 /* NYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC07C20D8A2F600864348 /* NYViewController.m */; };
 		2F2BC09B20D8A2F600864348 /* NYScriptMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC07F20D8A2F600864348 /* NYScriptMessage.m */; };
-		2F2BC09C20D8A2F600864348 /* NSObject+NYRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08220D8A2F600864348 /* NSObject+NYRuntime.m */; };
-		2F2BC09D20D8A2F600864348 /* WKWebView+NYWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08420D8A2F600864348 /* WKWebView+NYWebCache.m */; };
 		2F2BC09E20D8A2F600864348 /* WKWebView+NYWebCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08620D8A2F600864348 /* WKWebView+NYWebCookie.m */; };
 		2F2BC09F20D8A2F600864348 /* NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08820D8A2F600864348 /* NYWebViewController.m */; };
 		2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */; };
@@ -67,10 +65,6 @@
 		2F2BC07C20D8A2F600864348 /* NYViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYViewController.m; sourceTree = "<group>"; };
 		2F2BC07E20D8A2F600864348 /* NYScriptMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYScriptMessage.h; sourceTree = "<group>"; };
 		2F2BC07F20D8A2F600864348 /* NYScriptMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYScriptMessage.m; sourceTree = "<group>"; };
-		2F2BC08120D8A2F600864348 /* NSObject+NYRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+NYRuntime.h"; sourceTree = "<group>"; };
-		2F2BC08220D8A2F600864348 /* NSObject+NYRuntime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+NYRuntime.m"; sourceTree = "<group>"; };
-		2F2BC08320D8A2F600864348 /* WKWebView+NYWebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+NYWebCache.h"; sourceTree = "<group>"; };
-		2F2BC08420D8A2F600864348 /* WKWebView+NYWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+NYWebCache.m"; sourceTree = "<group>"; };
 		2F2BC08520D8A2F600864348 /* WKWebView+NYWebCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+NYWebCookie.h"; sourceTree = "<group>"; };
 		2F2BC08620D8A2F600864348 /* WKWebView+NYWebCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+NYWebCookie.m"; sourceTree = "<group>"; };
 		2F2BC08720D8A2F600864348 /* NYWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYWebViewController.h; sourceTree = "<group>"; };
@@ -177,10 +171,6 @@
 		2F2BC08020D8A2F600864348 /* NYWebViewCache */ = {
 			isa = PBXGroup;
 			children = (
-				2F2BC08120D8A2F600864348 /* NSObject+NYRuntime.h */,
-				2F2BC08220D8A2F600864348 /* NSObject+NYRuntime.m */,
-				2F2BC08320D8A2F600864348 /* WKWebView+NYWebCache.h */,
-				2F2BC08420D8A2F600864348 /* WKWebView+NYWebCache.m */,
 				2F2BC08520D8A2F600864348 /* WKWebView+NYWebCookie.h */,
 				2F2BC08620D8A2F600864348 /* WKWebView+NYWebCookie.m */,
 			);
@@ -374,9 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F2BC09D20D8A2F600864348 /* WKWebView+NYWebCache.m in Sources */,
 				2F2BC09E20D8A2F600864348 /* WKWebView+NYWebCookie.m in Sources */,
-				2F2BC09C20D8A2F600864348 /* NSObject+NYRuntime.m in Sources */,
 				2F2BC09720D8A2F600864348 /* LogCategory.m in Sources */,
 				2F19455A20FC749C0013311D /* NSURL+NYTool.m in Sources */,
 				2F2BC09920D8A2F600864348 /* main.m in Sources */,

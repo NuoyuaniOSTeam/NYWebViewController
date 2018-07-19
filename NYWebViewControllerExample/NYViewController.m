@@ -27,29 +27,9 @@
     self.tableView.dataSource = self;
     self.arr = @[@"测试一",@"测试二",@"测试三"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"testCell"];
-    self.tableView.tableFooterView = [self tableFooterView];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:0 target:nil action:nil];
-
 }
 
-- (UIView *)tableFooterView
-{
-    if (!_tableFooterView) {
-        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-        but.frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
-        [but addTarget:self action:@selector(deleteCache) forControlEvents:UIControlEventTouchUpInside];
-        [but setTitle:@"清除缓存" forState:0];
-        [but setTitleColor:[UIColor blueColor] forState:0];
-        _tableFooterView = but;
-    }
-    return _tableFooterView;
-}
-
-- (void)deleteCache
-{
-    NYWebViewController *webView = [[NYWebViewController alloc] init];
-    [webView deleteAllWebCache];
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 3;
