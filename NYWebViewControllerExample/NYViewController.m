@@ -52,6 +52,7 @@
             vc.progressColor = [UIColor greenColor];
             vc.showLoadingProgressView = NO;
             vc.maxAllowedTitleLength = 6;
+//            vc.enableGOBackGesture = YES;
             [self.navigationController pushViewController:vc animated:YES];
             break;
             
