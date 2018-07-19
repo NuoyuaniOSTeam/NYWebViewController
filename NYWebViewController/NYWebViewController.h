@@ -55,7 +55,7 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 @property (nonatomic, assign) BOOL enableGOBackGesture;
 ///
 // 是否显示网页来源 default YES
-@property(assign, nonatomic) BOOL showHostLabel; // host显示优化（跳转多页）
+@property(assign, nonatomic) BOOL showHostLabel;
 
 @property (nonatomic, weak) id<NYWebViewControllerDelegate> delegate;
 
