@@ -27,29 +27,9 @@
     self.tableView.dataSource = self;
     self.arr = @[@"测试一",@"测试二",@"测试三"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"testCell"];
-    self.tableView.tableFooterView = [self tableFooterView];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:0 target:nil action:nil];
-
 }
 
-- (UIView *)tableFooterView
-{
-    if (!_tableFooterView) {
-        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-        but.frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
-        [but addTarget:self action:@selector(deleteCache) forControlEvents:UIControlEventTouchUpInside];
-        [but setTitle:@"清除缓存" forState:0];
-        [but setTitleColor:[UIColor blueColor] forState:0];
-        _tableFooterView = but;
-    }
-    return _tableFooterView;
-}
-
-- (void)deleteCache
-{
-    NYWebViewController *webView = [[NYWebViewController alloc] init];
-    [webView deleteAllWebCache];
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 3;
@@ -77,14 +57,14 @@
             
         }
         case 1:{
-            NYWebViewController *webVC = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+            NYWebViewController *webVC = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
             [self.navigationController pushViewController:webVC animated:YES];
             break;
         }
             
         case 2:{
             NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"html"];
-            _webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
+            _webVC = [[NYWebViewController alloc] initWithURL:[NSURL fileURLWithPath:path]];
             [self addScriptMessageHandler];
             [self.navigationController pushViewController:_webVC animated:YES];
             _webVC.delegate = self;
@@ -143,7 +123,7 @@
 
 - (void)testcallJS:(NYWebViewController *) vc {
     //NYWebViewController *v = vc;
-    [vc webViewControllerCallJS:@"callJs('oc原生调用js')" handler:^(id response, NSError *error) {
+    [vc webViewControllerCallJS:@"callJs('oc原生调用js')" completeBlock:^(id response, NSError *error) {
         NSLog(@"调用js回调事件");
     }];
 }

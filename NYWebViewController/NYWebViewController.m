@@ -9,7 +9,6 @@
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
 #import "WKWebView+NYWebCookie.h"
-#import "WKWebView+NYWebCache.h"
 
 #ifndef kBY404NotFoundHTMLPath
 #define kBY404NotFoundHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/404" ofType:@"html"]
@@ -39,7 +38,6 @@ static MessageBlock messageCallback = nil;
      //WKWebViewDidReceiveAuthenticationChallengeHandler _challengeHandler;
     NYSecurityPolicy *_securityPolicy;
     WKWebViewConfiguration *_configuration;
-    BOOL _isLoadLocal;
     UIBarButtonItem * __weak _doneItem;
 }
 //@property (strong, nonatomic) CALayer *progresslayer;
@@ -78,27 +76,16 @@ static MessageBlock messageCallback = nil;
     return self;
 }
 
-- (instancetype)initWithLocalHtmlURL:(NSURL *)url {
-    if ([self init]) {
-        self.url = url;
-        _isLoadLocal = YES;
-    }
-    return self;
-}
-
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.view addSubview:self.webView];
-    });
-    
+    [self.view addSubview:self.webView];
     if (self.showHostLabel) {
         [self.webView insertSubview:self.hostLable belowSubview:self.webView.scrollView];
     }
-    if (_isLoadLocal) {
+    if ([[self.url scheme] isEqualToString:@"file"]) {
         [self loadLocalHTMLURL:_url];
     }else{
         [self loadURL:_url];
@@ -343,6 +330,7 @@ static MessageBlock messageCallback = nil;
     [self nyPresentViewController:alertController animated:YES];
 }
 
+
 - (void)nyPresentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag{
     
     [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
@@ -380,6 +368,12 @@ static MessageBlock messageCallback = nil;
     NSLog(@"%s", __FUNCTION__);
 }
 
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
+{
+    NSLog(@"%s", __FUNCTION__);
+    [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
+}
+
 /**
  *  页面加载完成之后调用
  *
@@ -394,11 +388,8 @@ static MessageBlock messageCallback = nil;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
     
-    if (_showHostLabel && self.hostLable) {
-        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 110);
-    }
     [self updateNavigationItems];
-    
+    [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
 }
 
 /**
@@ -415,6 +406,7 @@ static MessageBlock messageCallback = nil;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
     [self didFailLoadWithError:error];
+    [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
 
 }
 
@@ -497,9 +489,7 @@ static MessageBlock messageCallback = nil;
 //    }
 }
 
-- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
-    NSLog(@"webViewWebContentProcessDidTerminate");
-}
+
 
 #pragma  mark - Navigation
 - (void)updateNavigationItems {
@@ -516,6 +506,15 @@ static MessageBlock messageCallback = nil;
     } else {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
         [self.navigationItem setLeftBarButtonItems:nil animated:NO];
+    }
+}
+
+- (void)updateHostLable
+{
+    if (_showHostLabel && self.hostLable) {
+        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 110);
+        _webView.scrollView.backgroundColor = [UIColor clearColor];
+        [self.webView insertSubview:self.hostLable belowSubview:self.webView.scrollView];
     }
 }
 
@@ -632,18 +631,18 @@ static MessageBlock messageCallback = nil;
     
 }
 
-- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr {
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)names {
     if (_config.userContentController) return;
     /* removeScriptMessageHandlerForName 同时使用，否则内存泄漏 */
-    for (NSString * objStr in nameArr) {
+    for (NSString * objStr in names) {
         [self.config.userContentController addScriptMessageHandler:self name:objStr];
     }
-    self.messageHandlerName = nameArr;
+    self.messageHandlerName = names;
 }
 
-- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr observeValue:(MessageBlock)callback {
-    messageCallback = callback;
-    [self addScriptMessageHandlerWithName:nameArr];
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)names observeValue:(MessageBlock)messageCallback {
+    messageCallback = messageCallback;
+    [self addScriptMessageHandlerWithName:names];
 }
 
 /**
@@ -654,10 +653,10 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)webViewControllerCallJS:(NSString *)jsStr {
-    [self webViewControllerCallJS:jsStr handler:nil];
+    [self webViewControllerCallJS:jsStr completeBlock:nil];
 }
 
-- (void)webViewControllerCallJS:(NSString *)jsStr handler:(void (^)(id response, NSError *error))handler {
+- (void)webViewControllerCallJS:(NSString *)jsStr completeBlock:(void (^)(id response, NSError *error))handler {
     NSLog(@"call js:%@",jsStr);
     // NSString *inputValueJS = @"document.getElementsByName('input')[0].attributes['value'].value";
     [self.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
@@ -673,23 +672,6 @@ static MessageBlock messageCallback = nil;
     [self.webView insertCookie:cookie];
 }
 
-/** 获取本地磁盘的cookies */
-- (NSMutableArray *)WKSharedHTTPCookieStorage
-{
-    return [self.webView sharedHTTPCookieStorage];
-}
-
-/** 删除所有的cookies */
-- (void)deleteAllWKCookies
-{
-    [self.webView deleteAllWKCookies];
-}
-
-/** 删除所有缓存不包括cookies */
-- (void)deleteAllWebCache
-{
-    [self.webView deleteAllWebCache];
-}
 
 #pragma mark - dealloc
 - (void)dealloc {
