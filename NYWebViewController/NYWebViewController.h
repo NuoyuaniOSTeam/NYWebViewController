@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
-#import "NYSecurityPolicy.h"
 #import "NYScriptMessage.h"
 
 //typedef NSURLSessionAuthChallengeDisposition (^WKWebViewDidReceiveAuthenticationChallengeHandler)(WKWebView *webView, NSURLAuthenticationChallenge *challenge, NSURLCredential * _Nullable __autoreleasing * _Nullable credential);

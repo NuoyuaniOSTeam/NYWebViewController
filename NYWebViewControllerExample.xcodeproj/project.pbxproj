@@ -19,9 +19,7 @@
 		2F2BC09920D8A2F600864348 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC07A20D8A2F600864348 /* main.m */; };
 		2F2BC09A20D8A2F600864348 /* NYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC07C20D8A2F600864348 /* NYViewController.m */; };
 		2F2BC09B20D8A2F600864348 /* NYScriptMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC07F20D8A2F600864348 /* NYScriptMessage.m */; };
-		2F2BC09E20D8A2F600864348 /* WKWebView+NYWebCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08620D8A2F600864348 /* WKWebView+NYWebCookie.m */; };
 		2F2BC09F20D8A2F600864348 /* NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08820D8A2F600864348 /* NYWebViewController.m */; };
-		2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */; };
 		2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2BC0A220D8B13A00864348 /* Main.storyboard */; };
 		B9D013E020FCC158007D0318 /* UINavigationController+NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D013DF20FCC158007D0318 /* UINavigationController+NYWebViewController.m */; };
 		B9D0155920FF42C1007D0318 /* NYWebiViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B9D0155820FF42C1007D0318 /* NYWebiViewController.bundle */; };
@@ -65,12 +63,8 @@
 		2F2BC07C20D8A2F600864348 /* NYViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYViewController.m; sourceTree = "<group>"; };
 		2F2BC07E20D8A2F600864348 /* NYScriptMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYScriptMessage.h; sourceTree = "<group>"; };
 		2F2BC07F20D8A2F600864348 /* NYScriptMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYScriptMessage.m; sourceTree = "<group>"; };
-		2F2BC08520D8A2F600864348 /* WKWebView+NYWebCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WKWebView+NYWebCookie.h"; sourceTree = "<group>"; };
-		2F2BC08620D8A2F600864348 /* WKWebView+NYWebCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WKWebView+NYWebCookie.m"; sourceTree = "<group>"; };
 		2F2BC08720D8A2F600864348 /* NYWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYWebViewController.h; sourceTree = "<group>"; };
 		2F2BC08820D8A2F600864348 /* NYWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYWebViewController.m; sourceTree = "<group>"; };
-		2F2BC08D20D8A2F600864348 /* NYSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYSecurityPolicy.h; sourceTree = "<group>"; };
-		2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYSecurityPolicy.m; sourceTree = "<group>"; };
 		2F2BC0A320D8B13A00864348 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2FD1EE75206384AC00A0D838 /* NYWebViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYWebViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE8D206384AD00A0D838 /* NYWebViewControllerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,20 +155,9 @@
 				2F2BC08820D8A2F600864348 /* NYWebViewController.m */,
 				2F2BC07E20D8A2F600864348 /* NYScriptMessage.h */,
 				2F2BC07F20D8A2F600864348 /* NYScriptMessage.m */,
-				2F2BC08020D8A2F600864348 /* NYWebViewCache */,
 				2F2BC08920D8A2F600864348 /* NYWebViewTool */,
-				2F2BC08C20D8A2F600864348 /* Security */,
 			);
 			path = NYWebViewController;
-			sourceTree = "<group>";
-		};
-		2F2BC08020D8A2F600864348 /* NYWebViewCache */ = {
-			isa = PBXGroup;
-			children = (
-				2F2BC08520D8A2F600864348 /* WKWebView+NYWebCookie.h */,
-				2F2BC08620D8A2F600864348 /* WKWebView+NYWebCookie.m */,
-			);
-			path = NYWebViewCache;
 			sourceTree = "<group>";
 		};
 		2F2BC08920D8A2F600864348 /* NYWebViewTool */ = {
@@ -184,15 +167,6 @@
 				C72E8BEA20E620AA006BC276 /* html.bundle */,
 			);
 			path = NYWebViewTool;
-			sourceTree = "<group>";
-		};
-		2F2BC08C20D8A2F600864348 /* Security */ = {
-			isa = PBXGroup;
-			children = (
-				2F2BC08D20D8A2F600864348 /* NYSecurityPolicy.h */,
-				2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */,
-			);
-			path = Security;
 			sourceTree = "<group>";
 		};
 		2FD1EE6C206384AC00A0D838 = {
@@ -364,7 +338,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F2BC09E20D8A2F600864348 /* WKWebView+NYWebCookie.m in Sources */,
 				2F2BC09720D8A2F600864348 /* LogCategory.m in Sources */,
 				2F19455A20FC749C0013311D /* NSURL+NYTool.m in Sources */,
 				2F2BC09920D8A2F600864348 /* main.m in Sources */,
@@ -373,7 +346,6 @@
 				B9D013E020FCC158007D0318 /* UINavigationController+NYWebViewController.m in Sources */,
 				2F2BC09A20D8A2F600864348 /* NYViewController.m in Sources */,
 				2F2BC09B20D8A2F600864348 /* NYScriptMessage.m in Sources */,
-				2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

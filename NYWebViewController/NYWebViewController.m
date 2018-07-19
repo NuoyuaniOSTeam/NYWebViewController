@@ -8,13 +8,16 @@
 
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
-#import "WKWebView+NYWebCookie.h"
 
 #ifndef kBY404NotFoundHTMLPath
 #define kBY404NotFoundHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/404" ofType:@"html"]
 #endif
 #ifndef kBYNetworkErrorHTMLPath
 #define kBYNetworkErrorHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/neterror" ofType:@"html"]
+#endif
+
+#ifndef NYWKCookiesKey
+#define NYWKCookiesKey @"NYWKCookiesKey_AAA"
 #endif
 
 #ifndef __OPTIMIZE__
@@ -36,7 +39,6 @@
 static MessageBlock messageCallback = nil;
 @interface NYWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>{
      //WKWebViewDidReceiveAuthenticationChallengeHandler _challengeHandler;
-    NYSecurityPolicy *_securityPolicy;
     WKWebViewConfiguration *_configuration;
     UIBarButtonItem * __weak _doneItem;
 }
@@ -669,7 +671,29 @@ static MessageBlock messageCallback = nil;
 #pragma mark - WKWebview 缓存 cookie／cache
 - (void)setcookie:(NSHTTPCookie *)cookie
 {
-    [self.webView insertCookie:cookie];
+    @autoreleasepool {
+        if (@available(iOS 11.0, *)) {
+            WKHTTPCookieStore *cookieStore = self.webView.configuration.websiteDataStore.httpCookieStore;
+            [cookieStore setCookie:cookie completionHandler:nil];
+            return;
+        }
+        
+        NSMutableArray *TempCookies = [NSMutableArray array];
+        NSMutableArray *localCookies =[NSKeyedUnarchiver unarchiveObjectWithData: [[NSUserDefaults standardUserDefaults] objectForKey: NYWKCookiesKey]];
+        for (int i = 0; i < localCookies.count; i++) {
+            NSHTTPCookie *TempCookie = [localCookies objectAtIndex:i];
+            if ([cookie.name isEqualToString:TempCookie.name]) {
+                [localCookies removeObject:TempCookie];
+                i--;
+                break;
+            }
+        }
+        [TempCookies addObjectsFromArray:localCookies];
+        [TempCookies addObject:cookie];
+        NSData *cookiesData = [NSKeyedArchiver archivedDataWithRootObject: TempCookies];
+        [[NSUserDefaults standardUserDefaults] setObject:cookiesData forKey:NYWKCookiesKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 
