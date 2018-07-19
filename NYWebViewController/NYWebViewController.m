@@ -38,7 +38,6 @@ static MessageBlock messageCallback = nil;
      //WKWebViewDidReceiveAuthenticationChallengeHandler _challengeHandler;
     NYSecurityPolicy *_securityPolicy;
     WKWebViewConfiguration *_configuration;
-    BOOL _isLoadLocal;
     UIBarButtonItem * __weak _doneItem;
 }
 //@property (strong, nonatomic) CALayer *progresslayer;
@@ -76,27 +75,16 @@ static MessageBlock messageCallback = nil;
     return self;
 }
 
-- (instancetype)initWithLocalHtmlURL:(NSURL *)url {
-    if ([self init]) {
-        self.url = url;
-        _isLoadLocal = YES;
-    }
-    return self;
-}
-
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.view addSubview:self.webView];
-    });
-    
+    [self.view addSubview:self.webView];
     if (self.showHostLabel) {
         [self.webView insertSubview:self.hostLable belowSubview:self.webView.scrollView];
     }
-    if (_isLoadLocal) {
+    if ([[self.url scheme] isEqualToString:@"file"]) {
         [self loadLocalHTMLURL:_url];
     }else{
         [self loadURL:_url];
@@ -645,18 +633,18 @@ static MessageBlock messageCallback = nil;
     
 }
 
-- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr {
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)names {
     if (_config.userContentController) return;
     /* removeScriptMessageHandlerForName 同时使用，否则内存泄漏 */
-    for (NSString * objStr in nameArr) {
+    for (NSString * objStr in names) {
         [self.config.userContentController addScriptMessageHandler:self name:objStr];
     }
-    self.messageHandlerName = nameArr;
+    self.messageHandlerName = names;
 }
 
-- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr observeValue:(MessageBlock)callback {
-    messageCallback = callback;
-    [self addScriptMessageHandlerWithName:nameArr];
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)names observeValue:(MessageBlock)messageCallback {
+    messageCallback = messageCallback;
+    [self addScriptMessageHandlerWithName:names];
 }
 
 /**
@@ -667,10 +655,10 @@ static MessageBlock messageCallback = nil;
 }
 
 - (void)webViewControllerCallJS:(NSString *)jsStr {
-    [self webViewControllerCallJS:jsStr handler:nil];
+    [self webViewControllerCallJS:jsStr completeBlock:nil];
 }
 
-- (void)webViewControllerCallJS:(NSString *)jsStr handler:(void (^)(id response, NSError *error))handler {
+- (void)webViewControllerCallJS:(NSString *)jsStr completeBlock:(void (^)(id response, NSError *error))handler {
     NSLog(@"call js:%@",jsStr);
     // NSString *inputValueJS = @"document.getElementsByName('input')[0].attributes['value'].value";
     [self.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {

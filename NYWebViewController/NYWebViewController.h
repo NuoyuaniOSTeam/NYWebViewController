@@ -35,17 +35,18 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 @property (nonatomic, strong) NSURL *url;
 
 - (instancetype)initWithURL:(NSURL *)url;
-- (instancetype)initWithLocalHtmlURL:(NSURL *)url;
 
 @property (nonatomic, strong) WKWebView *webView;
-// show progress default yes
+/** show progress default yes */
 @property (nonatomic, assign) BOOL showLoadingProgressView;
-// set progress color. default color
+
+/** set progress color. default color*/
 @property (nonatomic, strong) UIColor *progressColor;
+
 //@property (nonatomic, assign)CGFloat progressHeight;
-// default yes 是否显示导航栏title
+/** default yes 是否显示导航栏title*/
 @property (nonatomic, assign) BOOL isUseWebPageTitle;
-// 导航栏titile长度(未完成)
+/** 导航栏titile长度(未完成) */
 @property (assign, nonatomic) NSUInteger maxAllowedTitleLength;
 
 // 网络请求小菊花  default YES
@@ -61,45 +62,49 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 
 - (void)loadURL:(NSURL *)pageURL;
 
-/** 重新加载webview */
+/**  reload */
 - (void)reload;
 
-/** 返回上一级 */
+/**  goback */
 - (void)goback;
-/** 下一级 */
+
+/**  goForward */
 - (void)goForward;
 
-
-
-/** 提供cookies插入，用于loadRequest 网页之前*/
+/**  set cookie，in loadRequest before*/
 - (void)setcookie:(NSHTTPCookie *)cookie;
 
 
-
-
-/** JS 调用OC 添加 messageHandler
- 添加 js 调用 OC，addScriptMessageHandler:name:有两个参数，第一个参数是 userContentController的代理对象，第二个参数是 JS 里发送 postMessage 的对象。添加一个脚本消息的处理器,同时需要在 JS 中添加，window.webkit.messageHandlers.<name>.postMessage(<messageBody>)才能起作用。
- @param nameArr JS 里发送 postMessage 的对象数组，可同时添加多个对象
+/**
+ *   JavaScript call Objective-c  Add messageHandler
+ *   Add javaScript call objective-caddScriptMessageHandler:name:
+ *   @param names may add one or more register handle  object. userContentController's delegate object.
+ *   javaScript must add : window.webkit.messageHandlers.<name>.postMessage(<messageBody>) to work。
+ *
  */
-- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr;
-- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)nameArr observeValue:(MessageBlock)callback;
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)names;
+- (void)addScriptMessageHandlerWithName:(NSArray<NSString *> *)names observeValue:(MessageBlock)messageCallback;
+
+/**
+ *   Remove register's handler.
+ *   @param name handler's name
+ */
 - (void)removeScriptMessageHandlerForName:(NSString *)name;
 
 
 /**
- *  调用JS方法（无返回值）
+ *  Native call javaScript method
+ *  @param jsStr call javaScript's string text ,It could be a function name or it could be a javaScript statement.
  *
- *  @param jsStr 调用JS的字符串可以是方法名称，或者单独的js语句  
  */
 - (void)webViewControllerCallJS:(nonnull NSString *)jsStr;
 
 /**
- *  调用JS方法（可处理返回值）
- *
- *  @param jsStr 调用JS的字符串可以是方法名称，或者单独的js语句
- *  @param handler  回调block
+ *  Native call javaScript method.
+ *  @param jsStr call javaScript's string text ,It could be a function name or it could be a javaScript statement.
+ *  @param completeBlock callback block.
  */
-- (void)webViewControllerCallJS:(nonnull NSString *)jsStr handler:(void (^)(id response, NSError *error))handler;
+- (void)webViewControllerCallJS:(nonnull NSString *)jsStr completeBlock:(void (^)(id response, NSError *error))completeBlock;
 
 @end
 

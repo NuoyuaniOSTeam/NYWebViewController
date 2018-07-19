@@ -64,7 +64,7 @@
             
         case 2:{
             NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"html"];
-            _webVC = [[NYWebViewController alloc] initWithLocalHtmlURL:[NSURL fileURLWithPath:path]];
+            _webVC = [[NYWebViewController alloc] initWithURL:[NSURL fileURLWithPath:path]];
             [self addScriptMessageHandler];
             [self.navigationController pushViewController:_webVC animated:YES];
             _webVC.delegate = self;
@@ -123,7 +123,7 @@
 
 - (void)testcallJS:(NYWebViewController *) vc {
     //NYWebViewController *v = vc;
-    [vc webViewControllerCallJS:@"callJs('oc原生调用js')" handler:^(id response, NSError *error) {
+    [vc webViewControllerCallJS:@"callJs('oc原生调用js')" completeBlock:^(id response, NSError *error) {
         NSLog(@"调用js回调事件");
     }];
 }
