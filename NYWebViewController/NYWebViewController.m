@@ -320,17 +320,6 @@ static MessageBlock messageCallback = nil;
     [self nyPresentViewController:alertController animated:YES];
 }
 
-//强制信任 https无效证书
-- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler{
-    
-    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
-        
-        NSURLCredential *card = [[NSURLCredential alloc]initWithTrust:challenge.protectionSpace.serverTrust];
-        
-        completionHandler(NSURLSessionAuthChallengeUseCredential,card);
-        
-    }
-}
 
 - (void)nyPresentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag{
     
