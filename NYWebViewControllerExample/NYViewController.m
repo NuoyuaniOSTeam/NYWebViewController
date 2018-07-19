@@ -71,7 +71,7 @@
             NYWebViewController *vc = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://nyonline.cn"]];
             vc.progressColor = [UIColor greenColor];
             vc.showLoadingProgressView = NO;
-        
+            vc.maxAllowedTitleLength = 6;
             [self.navigationController pushViewController:vc animated:YES];
             break;
             

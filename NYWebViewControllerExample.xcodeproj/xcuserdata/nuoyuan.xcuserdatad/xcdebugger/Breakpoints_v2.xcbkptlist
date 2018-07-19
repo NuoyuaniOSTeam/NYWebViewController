@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/NYWebViewController.m"
-            timestampString = "553605003.9915529"
+            timestampString = "553663588.2684"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "546"
-            endingLineNumber = "546"
+            startingLineNumber = "549"
+            endingLineNumber = "549"
             landmarkName = "-navigationBackBarButtonItem"
             landmarkType = "7">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/NYWebViewController.m"
-            timestampString = "553605003.992012"
+            timestampString = "553663588.2684669"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "551"
-            endingLineNumber = "551"
+            startingLineNumber = "554"
+            endingLineNumber = "554"
             landmarkName = "-navigationBackBarButtonItem"
             landmarkType = "7">
          </BreakpointContent>
@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/NYWebViewController.m"
-            timestampString = "553605003.992112"
+            timestampString = "553663588.268517"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "574"
-            endingLineNumber = "574"
+            startingLineNumber = "577"
+            endingLineNumber = "577"
             landmarkName = "-navigationItemHandleBack:"
             landmarkType = "7">
          </BreakpointContent>
@@ -68,12 +68,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/NYWebViewController.m"
-            timestampString = "553605003.992206"
+            timestampString = "553663588.268566"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "570"
-            endingLineNumber = "570"
-            landmarkName = "-navigationItemHandleBack:"
+            startingLineNumber = "573"
+            endingLineNumber = "573"
+            landmarkName = "-navigationIemHandleClose:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -84,13 +84,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/NYWebViewController.m"
-            timestampString = "553605003.992288"
+            timestampString = "553663588.268612"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "566"
-            endingLineNumber = "566"
-            landmarkName = "NYWebViewController"
-            landmarkType = "3">
+            startingLineNumber = "569"
+            endingLineNumber = "569"
+            landmarkName = "-doneButtonClicked:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -100,7 +100,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/UINavigationController/UINavigationController+NYWebViewController.m"
-            timestampString = "553605003.992382"
+            timestampString = "553658423.386786"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "24"
@@ -116,7 +116,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/UINavigationController/UINavigationController+NYWebViewController.m"
-            timestampString = "553605003.992699"
+            timestampString = "553658423.387018"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "68"

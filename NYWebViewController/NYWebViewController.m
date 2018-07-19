@@ -25,7 +25,7 @@
 #endif
 
 #define iphoneX_5_8 ([UIScreen mainScreen].bounds.size.height==812.0f)
-#define kProgressViewHeight 1.5f
+#define defaultMaxTitleLength 10
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 @interface UIProgressView (WebKit)
@@ -66,6 +66,7 @@ static MessageBlock messageCallback = nil;
         self.isUseWebPageTitle = YES;
         self.activityIndicatorVisible = YES;
         self.showHostLabel = YES;
+        self.maxAllowedTitleLength = defaultMaxTitleLength;
     }
     return self;
 }
@@ -207,7 +208,17 @@ static MessageBlock messageCallback = nil;
     else if ([keyPath isEqualToString:@"title"]){
         if (object == self.webView) {
             if ([self isUseWebPageTitle]) {
-                self.title = self.webView.title;
+                NSString *title = [self.webView title];
+                if (self.maxAllowedTitleLength > defaultMaxTitleLength) {
+                       if (title.length > defaultMaxTitleLength) {
+                                title = [[title substringToIndex:defaultMaxTitleLength -1] stringByAppendingString:@"…"];
+                       }
+                } else if (self.maxAllowedTitleLength <= defaultMaxTitleLength){
+                    if (title.length > self.maxAllowedTitleLength) {
+                        title = [[title substringToIndex:self.maxAllowedTitleLength-1] stringByAppendingString:@"…"];
+                    }
+                }
+                self.title = title;
             }
         }
         else{
@@ -217,7 +228,6 @@ static MessageBlock messageCallback = nil;
     else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
-    
 }
 
 #pragma mark - action
@@ -588,9 +598,8 @@ static MessageBlock messageCallback = nil;
 
 - (UIProgressView *)progressView {
     if (_progressView) return _progressView;
-    CGFloat progressBarHeight = kProgressViewHeight;
     CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
-    CGRect barFrame = CGRectMake(0, navigationBarBounds.size.height - progressBarHeight, navigationBarBounds.size.width, progressBarHeight);
+    CGRect barFrame = CGRectMake(0, navigationBarBounds.size.height - 2, navigationBarBounds.size.width, 2);
     _progressView = [[UIProgressView alloc] initWithFrame:barFrame];
     _progressView.trackTintColor = [UIColor clearColor];
     _progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
