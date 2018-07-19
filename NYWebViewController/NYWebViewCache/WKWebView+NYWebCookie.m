@@ -12,7 +12,7 @@ static NSString* const PAWKCookiesKey = @"org.skyfox.PAWKShareInstanceCookies";
 {
     NSMutableArray *cookieArr = [self sharedHTTPCookieStorage];
     if (cookieArr.count == 0)return;
-    for (NSHTTPCookie *cookie in cookieArr) {
+    for (NSHTTPCookie *cookie in cookieArr)  {
         [cookieStore setCookie:cookie completionHandler:nil];
     }
 }

@@ -333,6 +333,18 @@ static MessageBlock messageCallback = nil;
     [self nyPresentViewController:alertController animated:YES];
 }
 
+//强制信任 https无效证书
+- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler{
+    
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        
+        NSURLCredential *card = [[NSURLCredential alloc]initWithTrust:challenge.protectionSpace.serverTrust];
+        
+        completionHandler(NSURLSessionAuthChallengeUseCredential,card);
+        
+    }
+}
+
 - (void)nyPresentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag{
     
     [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
@@ -370,6 +382,12 @@ static MessageBlock messageCallback = nil;
     NSLog(@"%s", __FUNCTION__);
 }
 
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
+{
+    NSLog(@"%s", __FUNCTION__);
+    [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
+}
+
 /**
  *  页面加载完成之后调用
  *
@@ -384,11 +402,8 @@ static MessageBlock messageCallback = nil;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
     
-    if (_showHostLabel && self.hostLable) {
-        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 110);
-    }
     [self updateNavigationItems];
-    
+    [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
 }
 
 /**
@@ -405,6 +420,7 @@ static MessageBlock messageCallback = nil;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
     [self didFailLoadWithError:error];
+    [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
 
 }
 
@@ -487,9 +503,7 @@ static MessageBlock messageCallback = nil;
 //    }
 }
 
-- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
-    NSLog(@"webViewWebContentProcessDidTerminate");
-}
+
 
 #pragma  mark - Navigation
 - (void)updateNavigationItems {
@@ -506,6 +520,15 @@ static MessageBlock messageCallback = nil;
     } else {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
         [self.navigationItem setLeftBarButtonItems:nil animated:NO];
+    }
+}
+
+- (void)updateHostLable
+{
+    if (_showHostLabel && self.hostLable) {
+        _hostLable.center = CGPointMake(self.webView.scrollView.center.x, 110);
+        _webView.scrollView.backgroundColor = [UIColor clearColor];
+        [self.webView insertSubview:self.hostLable belowSubview:self.webView.scrollView];
     }
 }
 

@@ -77,7 +77,7 @@
             
         }
         case 1:{
-            NYWebViewController *webVC = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+            NYWebViewController *webVC = [[NYWebViewController alloc] initWithURL:[NSURL URLWithString:@"https://www.baidu.com"]];
             [self.navigationController pushViewController:webVC animated:YES];
             break;
         }
