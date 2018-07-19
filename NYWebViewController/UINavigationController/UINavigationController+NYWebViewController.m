@@ -10,7 +10,7 @@
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
 
-@implementation UINavigationController (AXWebViewController)
+@implementation UINavigationController (NYWebViewController)
 
 + (void)load {
     static dispatch_once_t onceToken;

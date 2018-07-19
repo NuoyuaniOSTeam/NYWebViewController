@@ -30,7 +30,7 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 @interface UIProgressView (WebKit)
 /// Hidden when progress approach 1.0 Default is NO.
-@property(assign, nonatomic) BOOL ax_hiddenWhenProgressApproachFullSize;
+@property(assign, nonatomic) BOOL ny_hiddenWhenProgressApproachFullSize;
 @end
 #endif
 
@@ -521,7 +521,7 @@ static MessageBlock messageCallback = nil;
 
 - (UIBarButtonItem *)navigationBackBarButtonItem {
     if (_navigationBackBarButtonItem) return _navigationBackBarButtonItem;
-    UIImage* backItemImage = [[[UINavigationBar appearance] backIndicatorImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]?:[[UIImage imageNamed:@"AXWebViewController.bundle/backItemImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage* backItemImage = [[[UINavigationBar appearance] backIndicatorImage] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]?:[[UIImage imageNamed:@"NYWebViewController.bundle/backItemImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIGraphicsBeginImageContextWithOptions(backItemImage.size, NO, backItemImage.scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(context, 0, backItemImage.size.height);
@@ -533,7 +533,7 @@ static MessageBlock messageCallback = nil;
     CGContextFillRect(context, rect);
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    UIImage* backItemHlImage = newImage?:[[UIImage imageNamed:@"AXWebViewController.bundle/backItemImage-hl"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage* backItemHlImage = newImage?:[[UIImage imageNamed:@"NYWebViewController.bundle/backItemImage-hl"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIButton* backButton = [UIButton buttonWithType:UIButtonTypeSystem];
     NSDictionary *attr = [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal];
     if (attr) {
@@ -595,14 +595,14 @@ static MessageBlock messageCallback = nil;
     _progressView.trackTintColor = [UIColor clearColor];
     _progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     _progressView.progressTintColor = self.progressColor;
-    _progressView.ax_hiddenWhenProgressApproachFullSize = YES;
+    _progressView.ny_hiddenWhenProgressApproachFullSize = YES;
     return _progressView;
 }
 
 - (void)setShowLoadingProgressView:(BOOL)showLoadingProgressView {
     _showLoadingProgressView = showLoadingProgressView;
     if (!showLoadingProgressView) {
-        self.progressView.ax_hiddenWhenProgressApproachFullSize = NO;
+        self.progressView.ny_hiddenWhenProgressApproachFullSize = NO;
         self.progressView.hidden = YES;
     }
 }
@@ -708,29 +708,29 @@ static MessageBlock messageCallback = nil;
     dispatch_once(&onceToken, ^{
         // Inject "-popViewControllerAnimated:"
         Method originalMethod = class_getInstanceMethod(self, @selector(setProgress:));
-        Method swizzledMethod = class_getInstanceMethod(self, @selector(ax_setProgress:));
+        Method swizzledMethod = class_getInstanceMethod(self, @selector(ny_setProgress:));
         method_exchangeImplementations(originalMethod, swizzledMethod);
         
         originalMethod = class_getInstanceMethod(self, @selector(setProgress:animated:));
-        swizzledMethod = class_getInstanceMethod(self, @selector(ax_setProgress:animated:));
+        swizzledMethod = class_getInstanceMethod(self, @selector(ny_setProgress:animated:));
         method_exchangeImplementations(originalMethod, swizzledMethod);
     });
 }
 
-- (void)ax_setProgress:(float)progress {
-    [self ax_setProgress:progress];
+- (void)ny_setProgress:(float)progress {
+    [self ny_setProgress:progress];
     
     [self checkHiddenWhenProgressApproachFullSize];
 }
 
-- (void)ax_setProgress:(float)progress animated:(BOOL)animated {
-    [self ax_setProgress:progress animated:animated];
+- (void)ny_setProgress:(float)progress animated:(BOOL)animated {
+    [self ny_setProgress:progress animated:animated];
     
     [self checkHiddenWhenProgressApproachFullSize];
 }
 
 - (void)checkHiddenWhenProgressApproachFullSize {
-    if (!self.ax_hiddenWhenProgressApproachFullSize) {
+    if (!self.ny_hiddenWhenProgressApproachFullSize) {
         return;
     }
     
@@ -752,12 +752,12 @@ static MessageBlock messageCallback = nil;
     }
 }
 
-- (BOOL)ax_hiddenWhenProgressApproachFullSize {
+- (BOOL)ny_hiddenWhenProgressApproachFullSize {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setAx_hiddenWhenProgressApproachFullSize:(BOOL)ax_hiddenWhenProgressApproachFullSize {
-    objc_setAssociatedObject(self, @selector(ax_hiddenWhenProgressApproachFullSize), @(ax_hiddenWhenProgressApproachFullSize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)setNy_hiddenWhenProgressApproachFullSize:(BOOL)ny_hiddenWhenProgressApproachFullSize {
+    objc_setAssociatedObject(self, @selector(ny_hiddenWhenProgressApproachFullSize), @(ny_hiddenWhenProgressApproachFullSize), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 @end
 #endif

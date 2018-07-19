@@ -25,8 +25,8 @@
 		2F2BC09F20D8A2F600864348 /* NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08820D8A2F600864348 /* NYWebViewController.m */; };
 		2F2BC0A120D8A2F600864348 /* NYSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2BC08E20D8A2F600864348 /* NYSecurityPolicy.m */; };
 		2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F2BC0A220D8B13A00864348 /* Main.storyboard */; };
-		B9D013D920FCA249007D0318 /* AXWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B9D013D820FCA249007D0318 /* AXWebViewController.bundle */; };
 		B9D013E020FCC158007D0318 /* UINavigationController+NYWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B9D013DF20FCC158007D0318 /* UINavigationController+NYWebViewController.m */; };
+		B9D0155920FF42C1007D0318 /* NYWebiViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B9D0155820FF42C1007D0318 /* NYWebiViewController.bundle */; };
 		C72E8BEB20E620AA006BC276 /* html.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C72E8BEA20E620AA006BC276 /* html.bundle */; };
 /* End PBXBuildFile section */
 
@@ -81,9 +81,9 @@
 		2FD1EE75206384AC00A0D838 /* NYWebViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYWebViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE8D206384AD00A0D838 /* NYWebViewControllerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FD1EE98206384AD00A0D838 /* NYWebViewControllerExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYWebViewControllerExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B9D013D820FCA249007D0318 /* AXWebViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AXWebViewController.bundle; sourceTree = "<group>"; };
 		B9D013DE20FCC158007D0318 /* UINavigationController+NYWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+NYWebViewController.h"; sourceTree = "<group>"; };
 		B9D013DF20FCC158007D0318 /* UINavigationController+NYWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+NYWebViewController.m"; sourceTree = "<group>"; };
+		B9D0155820FF42C1007D0318 /* NYWebiViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NYWebiViewController.bundle; sourceTree = "<group>"; };
 		C72E8BEA20E620AA006BC276 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,7 +190,7 @@
 		2F2BC08920D8A2F600864348 /* NYWebViewTool */ = {
 			isa = PBXGroup;
 			children = (
-				B9D013D820FCA249007D0318 /* AXWebViewController.bundle */,
+				B9D0155820FF42C1007D0318 /* NYWebiViewController.bundle */,
 				C72E8BEA20E620AA006BC276 /* html.bundle */,
 			);
 			path = NYWebViewTool;
@@ -344,9 +344,9 @@
 				C72E8BEB20E620AA006BC276 /* html.bundle in Resources */,
 				2F2BC0A420D8B13A00864348 /* Main.storyboard in Resources */,
 				2F2BC09820D8A2F600864348 /* main.html in Resources */,
-				B9D013D920FCA249007D0318 /* AXWebViewController.bundle in Resources */,
 				2F2BC09520D8A2F600864348 /* LaunchScreen.storyboard in Resources */,
 				2F2BC09620D8A2F600864348 /* Info.plist in Resources */,
+				B9D0155920FF42C1007D0318 /* NYWebiViewController.bundle in Resources */,
 				2F2BC09120D8A2F600864348 /* Info.plist in Resources */,
 				2F2BC09420D8A2F600864348 /* Assets.xcassets in Resources */,
 				2F2BC08F20D8A2F600864348 /* Info.plist in Resources */,
@@ -547,7 +547,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PLWRYFMN46;
+				DEVELOPMENT_TEAM = 4T8DQP5EDJ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
 				INFOPLIST_FILE = NYWebViewControllerExample/Info.plist;
@@ -563,7 +563,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PLWRYFMN46;
+				DEVELOPMENT_TEAM = 4T8DQP5EDJ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
 				INFOPLIST_FILE = NYWebViewControllerExample/Info.plist;
