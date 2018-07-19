@@ -100,27 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NYWebViewController/UINavigationController/UINavigationController+NYWebViewController.m"
-            timestampString = "553658423.386786"
+            timestampString = "553676418.979548"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
-            landmarkName = "+load"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NYWebViewController/UINavigationController/UINavigationController+NYWebViewController.m"
-            timestampString = "553658423.387018"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "-ax_navigationBar:shouldPopItem:"
             landmarkType = "7">
          </BreakpointContent>
