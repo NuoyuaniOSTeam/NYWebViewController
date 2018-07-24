@@ -658,7 +658,7 @@ static MessageBlock messageCallback = nil;
     [self webViewControllerCallJS:jsStr completeBlock:nil];
 }
 
-- (void)webViewControllerCallJS:(NSString *)jsStr completeBlock:(void (^)(id response, NSError *error))handler {
+- (void)webViewControllerCallJS:(NSString *)jsStr completeBlock:(void (^)(id response, NSError *error))completeBlock {
     NSLog(@"call js:%@",jsStr);
     // NSString *inputValueJS = @"document.getElementsByName('input')[0].attributes['value'].value";
     [self.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
