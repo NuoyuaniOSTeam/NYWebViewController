@@ -662,7 +662,7 @@ static MessageBlock messageCallback = nil;
     NSLog(@"call js:%@",jsStr);
     // NSString *inputValueJS = @"document.getElementsByName('input')[0].attributes['value'].value";
     [self.webView evaluateJavaScript:jsStr completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-        handler ? handler(response,error) : NULL;
+        completeBlock ? completeBlock(response,error) : NULL;
     }];
     
 }
