@@ -13,12 +13,12 @@
 @implementation UINavigationController (NYWebViewController)
 
 + (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        Method originalMethod = class_getInstanceMethod(self, @selector(navigationBar:shouldPopItem:));
-        Method swizzledMethod = class_getInstanceMethod(self, @selector(ny_navigationBar:shouldPopItem:));
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    });
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        Method originalMethod = class_getInstanceMethod(self, @selector(navigationBar:shouldPopItem:));
+//        Method swizzledMethod = class_getInstanceMethod(self, @selector(ny_navigationBar:shouldPopItem:));
+//        method_exchangeImplementations(originalMethod, swizzledMethod);
+//    });
 }
 
 - (BOOL)ny_navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item{

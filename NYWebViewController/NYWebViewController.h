@@ -93,13 +93,3 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 @end
 
 
-@interface NYWebViewController (NavigationControllerBar)
-
-@property (nonatomic, strong) UIColor *navTintColor;
-@property (nonatomic, strong) UIBarButtonItem *leftBarButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *rightBarButtonItem;
-@property(assign, nonatomic) BOOL showsNavigationCloseBarButtonItem;
-@property(assign, nonatomic) BOOL showsNavigationBackBarButtonItemTitle;
-
-@end
-

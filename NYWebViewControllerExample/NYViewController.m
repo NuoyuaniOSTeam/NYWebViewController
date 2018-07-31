@@ -10,7 +10,6 @@
 #import "NYWebViewController.h"
 #import "NSURL+NYTool.h"
 #import "NYWebViewController+Navigation.h"
-
 #define iOS10_0Later ([UIDevice currentDevice].systemVersion.floatValue >= 10.0f)
 
 @interface NYViewController ()<UITableViewDelegate, UITableViewDataSource, NYWebViewControllerDelegate>

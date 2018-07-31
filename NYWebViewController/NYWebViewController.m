@@ -84,6 +84,8 @@ static MessageBlock messageCallback = nil;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
+    [self addBackButton]; //添加返回按钮
+    
     [self.view addSubview:self.webView];
     if (self.showHostLabel) {
         [self.webView insertSubview:self.hostLable belowSubview:self.webView.scrollView];
@@ -93,8 +95,6 @@ static MessageBlock messageCallback = nil;
     }else{
         [self loadURL:_url];
     }
-    [self updateNavigationItems];
-    self.navigationItem.leftItemsSupplementBackButton = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,7 +104,6 @@ static MessageBlock messageCallback = nil;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self updateNavigationItems];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -116,6 +115,35 @@ static MessageBlock messageCallback = nil;
     [super viewDidDisappear:animated];
 }
 
++ (UIButton *)backButtonForNav
+{
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setImage:[UIImage imageNamed:@"NYWebViewController.bundle/backItemImage"] forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:@"NYWebViewController.bundle/backItemImage_hl"] forState:UIControlStateHighlighted];
+    btn.frame = CGRectMake(0, 0, 40, 44);
+    return btn;
+}
+
+- (void)addBackButton
+{
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setImage:[UIImage imageNamed:@"backIcon"] forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:@"backIcon"] forState:UIControlStateHighlighted];
+    btn.frame = CGRectMake(0, 0, 40, 44);
+    [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+}
+
+- (void)btnClick:(UIButton *)button
+{
+    if (self.navigationController) {
+        if ([self.webView canGoBack]) {
+            [self.webView goBack];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+}
 #pragma mark - load html
 - (void)loadURL:(NSURL *)pageURL {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:pageURL];
@@ -263,7 +291,6 @@ static MessageBlock messageCallback = nil;
 
 - (void)didStartLoadWithNavigation:(WKNavigation *)navigation {
     self.navigationItem.title = @"加载中...";
-    [self updateNavigationItems];
     if (_delegate && [_delegate respondsToSelector:@selector(webViewControllerDidStartLoad:)]) {
         [_delegate webViewControllerDidStartLoad:self];
     }
@@ -271,7 +298,6 @@ static MessageBlock messageCallback = nil;
 
 
 - (void)didFailLoadWithError:(NSError *)error{
-    [self updateNavigationItems];
     if (error.code == NSURLErrorCancelled) {
         [_webView reload];
         return;
@@ -391,7 +417,6 @@ static MessageBlock messageCallback = nil;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
     
-    [self updateNavigationItems];
     [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
 }
 
@@ -446,7 +471,6 @@ static MessageBlock messageCallback = nil;
  *  @param decisionHandler  是否调转block
  */
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    [self updateNavigationItems];
     if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:decidePolicyForNavigationAction:decisionHandler:)]) {
         [self.delegate webViewController:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
     }else{
@@ -495,23 +519,6 @@ static MessageBlock messageCallback = nil;
 
 
 #pragma  mark - Navigation
-- (void)updateNavigationItems {
-    [self.navigationItem setLeftBarButtonItems:nil animated:NO];
-    if (self.webView.canGoBack) {// Web view can go back means a lot requests exist.
-        UIBarButtonItem *spaceButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spaceButtonItem.width = -6.5;
-        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-        if (self.navigationController.viewControllers.count == 1) {
-            [self.navigationItem setLeftBarButtonItems:@[spaceButtonItem, self.navigationBackBarButtonItem, self.navigationCloseBarButtonItem] animated:NO];
-        } else {
-            [self.navigationItem setLeftBarButtonItems:@[self.navigationCloseBarButtonItem] animated:NO];
-        }
-    } else {
-        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-        [self.navigationItem setLeftBarButtonItems:nil animated:NO];
-    }
-}
-
 - (void)updateHostLable
 {
     if (_showHostLabel && self.hostLable) {
@@ -565,6 +572,7 @@ static MessageBlock messageCallback = nil;
     
     [backButton addTarget:self action:@selector(navigationItemHandleBack:) forControlEvents:UIControlEventTouchUpInside];
     _navigationBackBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     return _navigationBackBarButtonItem;
 }
 
