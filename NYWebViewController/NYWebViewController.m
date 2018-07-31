@@ -8,6 +8,7 @@
 
 #import "NYWebViewController.h"
 #import <objc/runtime.h>
+#import "NYWebViewController+Navigation.h"
 
 #ifndef kBY404NotFoundHTMLPath
 #define kBY404NotFoundHTMLPath [[NSBundle bundleForClass:NSClassFromString(@"NYWebViewController")] pathForResource:@"html.bundle/404" ofType:@"html"]

@@ -35,22 +35,9 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 - (instancetype)initWithURL:(NSURL *)url;
 
 @property (nonatomic, strong) WKWebView *webView;
-// show progress default yes
-@property (nonatomic, assign) BOOL showLoadingProgressView;
-// set progress color. default color
-@property (nonatomic, strong) UIColor *progressColor;
-//@property (nonatomic, assign)CGFloat progressHeight;
-// default yes 是否显示导航栏title
-@property (nonatomic, assign) BOOL isUseWebPageTitle;
-// 导航栏titile长度默认不超过10个字长
-@property (assign, nonatomic) NSUInteger maxAllowedTitleLength;
 
 // 网络请求小菊花  default YES
 @property (nonatomic, assign) BOOL activityIndicatorVisible;
-
-// 是否禁用返回手势 (未完成)
-@property (nonatomic, assign) BOOL enableGOBackGesture;
-///
 // 是否显示网页来源 default YES
 @property(assign, nonatomic) BOOL showHostLabel;
 

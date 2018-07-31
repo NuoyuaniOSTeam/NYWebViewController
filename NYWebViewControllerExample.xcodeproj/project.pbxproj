@@ -72,6 +72,7 @@
 		B9D013DE20FCC158007D0318 /* UINavigationController+NYWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+NYWebViewController.h"; sourceTree = "<group>"; };
 		B9D013DF20FCC158007D0318 /* UINavigationController+NYWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+NYWebViewController.m"; sourceTree = "<group>"; };
 		B9D0155820FF42C1007D0318 /* NYWebiViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NYWebiViewController.bundle; sourceTree = "<group>"; };
+		B9FC8BF1210FFFA500572217 /* NYWebViewController+Navigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NYWebViewController+Navigation.h"; sourceTree = "<group>"; };
 		C72E8BEA20E620AA006BC276 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +151,7 @@
 		2F2BC07D20D8A2F600864348 /* NYWebViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B9FC8BF1210FFFA500572217 /* NYWebViewController+Navigation.h */,
 				B9D013DA20FCC0FA007D0318 /* UINavigationController */,
 				2F2BC08720D8A2F600864348 /* NYWebViewController.h */,
 				2F2BC08820D8A2F600864348 /* NYWebViewController.m */,
@@ -507,7 +509,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PLWRYFMN46;
+				DEVELOPMENT_TEAM = 4T8DQP5EDJ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
 				INFOPLIST_FILE = NYWebViewControllerExample/Info.plist;
@@ -523,7 +525,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PLWRYFMN46;
+				DEVELOPMENT_TEAM = 4T8DQP5EDJ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
 				INFOPLIST_FILE = NYWebViewControllerExample/Info.plist;
