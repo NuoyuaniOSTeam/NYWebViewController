@@ -9,11 +9,11 @@ Pod::Spec.new do |s|
     s.name         = 'NYWebViewController'
     s.version      = '1.0.3'
     s.summary      = 'NYWebViewController base on WKWebView'
-    s.homepage     = 'NYWebViewController base on WKWebView, addtion with cocoapod support.'
+    s.homepage     = 'https://github.com/NuoyuaniOSTeam/NYWebViewController'
     s.license      = 'MIT'
     s.authors      = {'NuoYuaniOS' => 'appleco@nuoayuan.com.cn'}
     s.platform     = :ios, '8.0'
     s.source       = {:git => 'https://github.com/NuoyuaniOSTeam/NYWebViewContorller.git', :tag => s.version}
-    s.source_files = 'NYWebViewController/**/*.{h,m}'
+    s.source_files = 'NYWebViewController/**/*.{h,m},NYWebViewController/NYWebViewTool/*.bundle'
     s.requires_arc = true
 end
