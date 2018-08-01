@@ -178,7 +178,6 @@ static MessageBlock messageCallback = nil;
         _webView.navigationDelegate = self;
         _webView.UIDelegate = self;
         _webView.allowsBackForwardNavigationGestures = YES;
-//        _webView.backgroundColor = [UIColor clearColor];
         _webView.scrollView.backgroundColor = [UIColor clearColor];
        
         if (self.showLoadingProgressView) {
@@ -198,15 +197,12 @@ static MessageBlock messageCallback = nil;
     if (_config == nil) {
         _config = [[WKWebViewConfiguration alloc] init];
         _config.userContentController = [[WKUserContentController alloc] init];
-        //_config.allowsInlineMediaPlayback = YES;        // 允许在线播放
-        //_config.allowsAirPlayForMediaPlayback = YES;  //允许视频播放
         _config.preferences = [[WKPreferences alloc] init];
         _config.preferences.minimumFontSize = 10;
         _config.preferences.javaScriptEnabled = YES; //是否支持 JavaScript
         _config.processPool = [[WKProcessPool alloc] init];
         NSMutableString *javascript = [NSMutableString string];
         [javascript appendString:@"document.documentElement.style.webkitTouchCallout='none';"];//禁止长按
-        //[javascript appendString:@"document.documentElement.style.webkitUserSelect='none';"];//禁止选择
         WKUserScript *noneSelectScript = [[WKUserScript alloc] initWithSource:javascript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         [_config.userContentController addUserScript:noneSelectScript];
     }
@@ -471,49 +467,43 @@ static MessageBlock messageCallback = nil;
  *  @param decisionHandler  是否调转block
  */
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:decidePolicyForNavigationAction:decisionHandler:)]) {
-        [self.delegate webViewController:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
-    }else{
-        decisionHandler(WKNavigationActionPolicyAllow);
-    }
-//    NSLog(@"URL: %@", navigationAction.request.URL.absoluteString);
-//    NSString *scheme = navigationAction.request.URL.scheme.lowercaseString;
-//    if (![scheme containsString:@"http"] && ![scheme containsString:@"about"] && ![scheme containsString:@"file"]) {
-//        // 对于跨域，需要手动跳转， 用系统浏览器（Safari）打开
-//        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"]) {
-//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否打开appstore？" preferredStyle:UIAlertControllerStyleAlert];
-//            UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                [webView goBack];
-//            }];
-//            UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                [NSURL SafariOpenURL:navigationAction.request.URL];
-//            }];
-//            [alert addAction:ActionOne];
-//            [alert addAction:ActionTwo];
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-//            });
-//
-//            decisionHandler(WKNavigationActionPolicyCancel);
-//            return;
-//        }
-//
-//        [NSURL openURL:navigationAction.request.URL];
-//        // 不允许web内跳转
-//        decisionHandler(WKNavigationActionPolicyCancel);
-//        
-//    } else {
-//
-//        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"])
-//        {
-//            [NSURL openURL:navigationAction.request.URL];
-//            decisionHandler(WKNavigationActionPolicyCancel);
-//            return;
-//        }
-//
-//        decisionHandler(WKNavigationActionPolicyAllow);
-//    }
+        NSLog(@"URL: %@", navigationAction.request.URL.absoluteString);
+        //NSString *scheme = navigationAction.request.URL.scheme.lowercaseString;
+        if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"]) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否打开appstore？" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [webView goBack];
+                }];
+                UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO} completionHandler:^(BOOL success)
+                     {
+                         if (!success) {
+                             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"打开失败" preferredStyle:UIAlertControllerStyleAlert];
+                             UIAlertAction *ActionTrue = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                             [alert addAction:ActionTrue];
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+                             });
+                         }
+                     }];
+                    
+                }];
+                [alert addAction:ActionOne];
+                [alert addAction:ActionTwo];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+                });
+                
+                decisionHandler(WKNavigationActionPolicyCancel);
+                return;            
+        }else{
+            if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:decidePolicyForNavigationAction:decisionHandler:)]) {
+                [self.delegate webViewController:self decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
+            }else{
+                decisionHandler(WKNavigationActionPolicyAllow);
+            }
+        }
 }
 
 
