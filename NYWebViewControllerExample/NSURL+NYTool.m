@@ -60,7 +60,7 @@
     }
 }
 
-+ (void)alertWithTitle:(NSString *)title  message:(NSString *)message action1Title:(NSString *)action1Title action2Title:(NSString *)action2Title action1:(void (^)())action1 action2:(void (^)())action2{
++ (void)alertWithTitle:(NSString *)title  message:(NSString *)message action1Title:(NSString *)action1Title action2Title:(NSString *)action2Title action1:(void (^)(void))action1 action2:(void (^)(void))action2{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:action1Title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         action1 ? action1():NULL;
@@ -78,7 +78,7 @@
 
 
 + (void)SafariOpenURL:(NSURL *)URL {
-#ifdef IOS10BWK
+if (@available(iOS 10.0, *)) {
     [[UIApplication sharedApplication] openURL:URL options:@{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO} completionHandler:^(BOOL success)
      {
          if (!success) {
@@ -90,7 +90,7 @@
              });
          }
      }];
-#else
+}else{
     if (![[UIApplication sharedApplication] openURL:URL]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"打开失败" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ActionTrue = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
@@ -99,7 +99,7 @@
             [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
         });
     }
-#endif
+}
     
 }
 

@@ -475,17 +475,14 @@ static MessageBlock messageCallback = nil;
                     [webView goBack];
                 }];
                 UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO} completionHandler:^(BOOL success)
-                     {
-                         if (!success) {
-                             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"打开失败" preferredStyle:UIAlertControllerStyleAlert];
-                             UIAlertAction *ActionTrue = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-                             [alert addAction:ActionTrue];
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-                             });
-                         }
-                     }];
+                    if (![[UIApplication sharedApplication] openURL:navigationAction.request.URL]) {
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"打开失败" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *ActionTrue = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                        [alert addAction:ActionTrue];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+                        });
+                    }
                     
                 }];
                 [alert addAction:ActionOne];

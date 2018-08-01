@@ -151,10 +151,10 @@
 
 //iOS10之后跳转
 - (void)openUrl:(NSURL *)url completion:(void(^)(BOOL success))block{
-    [[UIApplication sharedApplication] openURL:url options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO} completionHandler:^(BOOL success) {
-        if(block)
-            block(success);
-    }];
+//    [[UIApplication sharedApplication] openURL:url options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO} completionHandler:^(BOOL success) {
+//        if(block)
+//            block(success);
+//    }];
 }
 
 - (void)webViewController:(NYWebViewController *)webViewController decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
@@ -164,8 +164,9 @@
         // 对于跨域，需要手动跳转， 用系统浏览器（Safari）打开
         if ([navigationAction.request.URL.host.lowercaseString isEqualToString:@"itunes.apple.com"]) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"是否打开appstore？" preferredStyle:UIAlertControllerStyleAlert];
+            __weak typeof(self) weakSelf  = self;
             UIAlertAction *ActionOne = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [_webVC goback];
+                [weakSelf.webVC goback];
             }];
             UIAlertAction *ActionTwo = [UIAlertAction actionWithTitle:@"去下载" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 [NSURL SafariOpenURL:navigationAction.request.URL];
