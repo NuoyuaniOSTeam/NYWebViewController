@@ -380,8 +380,8 @@ static MessageBlock messageCallback = nil;
     if (_activityIndicatorVisible) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     }
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didStartProvisionalNavigation:)]) {
-        [self.delegate webView:self didStartProvisionalNavigation:navigation];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:didStartProvisionalNavigation:)]) {
+        [self.delegate webViewController:self didStartProvisionalNavigation:navigation];
     }
 }
 
@@ -394,8 +394,8 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
     
     NSLog(@"%s", __FUNCTION__);
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didCommitNavigation:)]) {
-        [self.delegate webView:self didCommitNavigation:navigation];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:didCommitNavigation:)]) {
+        [self.delegate webViewController:self didCommitNavigation:navigation];
     }
 }
 
@@ -421,8 +421,8 @@ static MessageBlock messageCallback = nil;
     
     [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didFinishNavigation:)]) {
-        [self.delegate webView:self didFinishNavigation:navigation];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:didFinishNavigation:)]) {
+        [self.delegate webViewController:self didFinishNavigation:navigation];
     }
 }
 
@@ -442,8 +442,8 @@ static MessageBlock messageCallback = nil;
     [self didFailLoadWithError:error];
     [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didFailProvisionalNavigation:withError:)]) {
-        [self.delegate webView:self didFailProvisionalNavigation:navigation withError:error];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:didFailProvisionalNavigation:withError:)]) {
+        [self.delegate webViewController:self didFailProvisionalNavigation:navigation withError:error];
     }
 }
 
@@ -456,8 +456,8 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
     
     NSLog(@"%s", __FUNCTION__);
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didReceiveServerRedirectForProvisionalNavigation:)]) {
-        [self.delegate webView:self didReceiveServerRedirectForProvisionalNavigation:navigation ];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:didReceiveServerRedirectForProvisionalNavigation:)]) {
+        [self.delegate webViewController:self didReceiveServerRedirectForProvisionalNavigation:navigation ];
     }
 }
 
@@ -471,8 +471,8 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
     
     NSLog(@"%s", __FUNCTION__);
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:decidePolicyForNavigationResponse:decisionHandler:)]) {
-        [self.delegate webView:self decidePolicyForNavigationResponse:navigationResponse decisionHandler:decisionHandler ];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewController:decidePolicyForNavigationResponse:decisionHandler:)]) {
+        [self.delegate webViewController:self decidePolicyForNavigationResponse:navigationResponse decisionHandler:decisionHandler ];
     }else{
         decisionHandler(WKNavigationResponsePolicyAllow);
     }
