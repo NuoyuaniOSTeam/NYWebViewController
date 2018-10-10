@@ -380,6 +380,9 @@ static MessageBlock messageCallback = nil;
     if (_activityIndicatorVisible) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didStartProvisionalNavigation:)]) {
+        [self.delegate webView:self didStartProvisionalNavigation:navigation];
+    }
 }
 
 /**
@@ -391,6 +394,9 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
     
     NSLog(@"%s", __FUNCTION__);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didCommitNavigation:)]) {
+        [self.delegate webView:self didCommitNavigation:navigation];
+    }
 }
 
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView
@@ -414,6 +420,10 @@ static MessageBlock messageCallback = nil;
     }
     
     [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didFinishNavigation:)]) {
+        [self.delegate webView:self didFinishNavigation:navigation];
+    }
 }
 
 /**
@@ -431,7 +441,10 @@ static MessageBlock messageCallback = nil;
     }
     [self didFailLoadWithError:error];
     [self performSelector:@selector(updateHostLable) withObject:nil afterDelay:0.3];
-
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didFailProvisionalNavigation:withError:)]) {
+        [self.delegate webView:self didFailProvisionalNavigation:navigation withError:error];
+    }
 }
 
 /**
@@ -443,6 +456,9 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
     
     NSLog(@"%s", __FUNCTION__);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didReceiveServerRedirectForProvisionalNavigation:)]) {
+        [self.delegate webView:self didReceiveServerRedirectForProvisionalNavigation:navigation ];
+    }
 }
 
 /**
@@ -455,8 +471,12 @@ static MessageBlock messageCallback = nil;
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
     
     NSLog(@"%s", __FUNCTION__);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:decidePolicyForNavigationResponse:decisionHandler:)]) {
+        [self.delegate webView:self decidePolicyForNavigationResponse:navigationResponse decisionHandler:decisionHandler ];
+    }else{
+        decisionHandler(WKNavigationResponsePolicyAllow);
+    }
     
-    decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 /**
