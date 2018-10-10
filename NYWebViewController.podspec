@@ -7,7 +7,7 @@
 #
 Pod::Spec.new do |s|
     s.name         = 'NYWebViewController'
-    s.version      = '1.0.2'
+    s.version      = '1.0.4'
     s.summary      = 'NYWebViewController base on WKWebView'
     s.homepage     = 'https://github.com/NuoyuaniOSTeam/NYWebViewController'
     s.license      = 'MIT'

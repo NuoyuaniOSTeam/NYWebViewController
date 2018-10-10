@@ -24,12 +24,12 @@ typedef void (^MessageBlock)(WKUserContentController *userContentController,NYSc
 - (void)webViewController:(NYWebViewController *)webViewController didFailLoadWithError:(NSError *)error;
 
 
-- (void)webView:(NYWebViewController *)webView  didStartProvisionalNavigation:(WKNavigation *)navigation;
-- (void)webView:(NYWebViewController *)webView didCommitNavigation:(WKNavigation *)navigation;
-- (void)webView:(NYWebViewController *)webView didFinishNavigation:(WKNavigation *)navigation;
-- (void)webView:(NYWebViewController *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error;
-- (void)webView:(NYWebViewController *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation;
-- (void)webView:(NYWebViewController *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler;
+- (void)webViewController:(NYWebViewController *)webViewController  didStartProvisionalNavigation:(WKNavigation *)navigation;
+- (void)webViewController:(NYWebViewController *)webViewController didCommitNavigation:(WKNavigation *)navigation;
+- (void)webViewController:(NYWebViewController *)webViewController didFinishNavigation:(WKNavigation *)navigation;
+- (void)webViewController:(NYWebViewController *)webViewController didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error;
+- (void)webViewController:(NYWebViewController *)webViewController didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation;
+- (void)webViewController:(NYWebViewController *)webViewController decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler;
 - (void)webViewController:(NYWebViewController *)webViewController decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
     
 - (void)webViewController:(NYWebViewController *)webViewController didReceiveScriptMessage:(NYScriptMessage *)message;
